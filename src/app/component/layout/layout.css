@@ -1,0 +1,266 @@
+/* Sidebar Styles */
+
+.sidebar {
+    width: 270px;
+    height: 100vh;
+    background-color: #0E2447;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: width 0.3s;
+    overflow: hidden;
+    padding-left: 50px;
+    padding-right: 20px;
+}
+
+.main_menu {
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 28.13px;
+    letter-spacing: -3%;
+    padding: 10px 15px;
+    margin-top: 5%;
+}
+.menu_image{
+    background-color: #983232;
+    border-radius: 6px;
+    padding:6px
+}
+.topmenu_image{
+    background-color: white;
+    border-radius: 10px;
+    width:45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.userinfo{
+    display: flex;
+    align-items: center;
+    text-align: end;
+    gap: 15px;
+    border-left: 1px solid white;
+    color: white;
+    padding: 0px 10px;
+  }
+  .user-img img {
+    width: 50px;
+  }
+  .user-name{
+    font-family: Roboto;
+font-weight: 500;
+font-size: 15px;
+line-height: 28.13px;
+letter-spacing: -3%;
+
+  }
+  .user-role{
+    font-family: Roboto;
+font-weight: 300;
+font-size: 12px;
+line-height: 23.44px;
+letter-spacing: -3%;
+
+  }
+.topmenu_image img {
+    width: 25px;
+}
+.menu_list{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.sidebar-closed {
+    width: 60px;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #0E2447;
+}
+
+.dashboard-title {
+    font-size: 18px;
+}
+.menu-item.active {
+    background-color: white;
+    border-radius: 6px;
+}
+.menu-item.active .menu-link .menu_image {
+    background-color: #0E2447; 
+}
+.menu-item.active .menu-link .show {
+    color: black;
+}
+
+
+
+.menu-icon {
+    cursor: pointer;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    
+}
+.menu_image img{
+    width: 25px;
+}
+.menu-item {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background-color: #1b2f4d;
+    border-radius: 6px;
+}
+
+.show {
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 37.5px;
+    letter-spacing: -3%;
+    color: white;
+}
+
+.menu-link {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.submenu {
+    list-style: none;
+    padding-left: 20px;
+    background-color: #34495e;
+}
+
+.submenu-item {
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.submenu-item a {
+    text-decoration: none;
+    color: white;
+}
+
+
+.logout{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #1E3A67;
+    cursor: pointer;
+    
+}
+.menu-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90vh;
+    padding-bottom: 30px ;
+}
+.logout img {
+    width: 25px;
+}
+.logout button {
+cursor: pointer;
+}
+.topbar-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.user-info {
+    font-size: 16px;
+}
+
+/* Layout Container */
+.dashboard-container {
+    display: flex;
+}
+
+.content-area {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    transition: margin-left 0.3s;
+}
+
+.sidebar-closed+.content-area {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+}
+
+.main-content {
+    padding: 20px;
+}
+
+
+
+.topbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    padding: 15px 50px;
+    background-color:#0E2447;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.icon-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.icon-button:hover {
+    background: #f0f0f0;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ccc;
+}
+
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-fallback {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
