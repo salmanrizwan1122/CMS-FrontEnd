@@ -106,6 +106,8 @@ const EmployeeData = () => {
   // ];
   const [departments, setDepartments] = useState([]);
   const [designations, setDesignations] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState([])
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedDesignation, setSelectedDesignation] = useState("");
   const [employees, setEmployees] = useState([]);
@@ -135,6 +137,13 @@ const EmployeeData = () => {
 
         const data = await response.json();
         setEmployees(data.users);
+
+        // Set default department and designation based on the first employee (or any employee you choose)
+        if (data.users.length > 0) {
+          const firstEmployee = data.users[0];
+          setSelectedDepartment(firstEmployee.department?.id || "");
+          setSelectedDesignation(firstEmployee.designation?.id || "");
+        }
       } catch (error) {
         console.error("Error fetching employees:", error);
         alert(`Error: ${error.message}`);
@@ -144,7 +153,39 @@ const EmployeeData = () => {
     fetchEmployees();
   }, []);
 
-
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const token = sessionStorage.getItem("token");
+  
+        if (!token) {
+          throw new Error("No token found in session storage.");
+        }
+  
+        const roleResponse = await fetch(`${API_BASE_URL}/roles/api/get-all/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        });
+  
+        if (!roleResponse.ok) {
+          throw new Error(`Failed to fetch role: ${roleResponse.statusText}`);
+        }
+  
+        const roleData = await roleResponse.json();
+        setRoles(roleData.roles);
+        console.log("Roles fetched:", roleData.roles);
+  
+        // If a department is selected, update the designations
+  
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+        alert(`Error: ${error.message}`);
+      }
+    };
+  
+    fetchRoles();
+  }, []); 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -179,6 +220,10 @@ const EmployeeData = () => {
     setSelectedDepartment(departmentId);
     setSelectedDesignation(""); // Reset designation when department changes
   };
+  const handleRoleChange = (e) => {
+    const roleId = parseInt(e.target.value);
+    setSelectedRole(roleId);
+  };
   // Handle Department selection
 
 
@@ -187,12 +232,22 @@ const EmployeeData = () => {
     setEditedEmployee({ ...employee });
     setIsEditing(false);
     setIsAdding(false);
+    
+    // Reset the dropdown values when opening the modal in read mode
+    if (!isAdding) {
+      setSelectedDepartment(employee?.department?.id || "");
+      setSelectedDesignation(employee?.designation?.id || ""); 
+      setSelectedRole(employee?.role?.id || "")
+    }
   };
 
   const closeModal = () => {
     setSelectedEmployee(null);
     setIsEditing(false);
     setIsAdding(false);
+    setSelectedDepartment(""); 
+  setSelectedDesignation(""); 
+  setSelectedRole("")
   };
   // Enable Editing
   const handleEditClick = () => {
@@ -246,6 +301,7 @@ const EmployeeData = () => {
       joiningdate: "",
       address: "",
     });
+ 
   };
   // Handle Update Click
   const handleUpdateClick = () => {
@@ -418,20 +474,20 @@ const EmployeeData = () => {
                     <input name="cnic" type="text" value={editedEmployee?.cnic || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
                   </div>
                   <div className="form-group">
-                    <label>Role:</label>
-                    <select
-                      name="role"
-                      value={editedEmployee?.role || ""}
-                      onChange={handleChange}
-                      disabled={!isEditing && !isAdding} // Make the dropdown editable only in editing or adding mode
-                    >
-                      <option value="">Select Role</option>
-                      <option value="admin">Admin</option>
-                      <option value="manager">Manager</option>
-                      <option value="employee">Employee</option>
-                      {/* Add other role options as needed */}
-                    </select>
-                  </div>
+                  <label>Role:</label>
+                  <select
+                    value={selectedRole}
+                    onChange={handleRoleChange}
+                    disabled={!(isEditing || isAdding)}
+                  >
+                    <option value="">Select Role</option>
+                    {roles.map((role) => (
+                      <option key={role.id} value={role.id}>
+                        {role.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                   <div className="form-group">
                     <label>Address:</label>
                     <input name="address" type="text" value={editedEmployee?.address || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
@@ -459,12 +515,14 @@ const EmployeeData = () => {
                     ))}
                   </select>
                 </div>
+
                 <div className="form-group">
                   <label>Designation:</label>
                   <select
                     value={selectedDesignation}
                     onChange={(e) => setSelectedDesignation(e.target.value)}
-                    disabled={!selectedDepartment || !designations.length || !isEditing && !isAdding}                  >
+                    disabled={!selectedDepartment || !designations.length || !isEditing && !isAdding}
+                  >
                     <option value="">Select Designation</option>
                     {designations.map((designation) => (
                       <option key={designation.id} value={designation.id}>
@@ -473,6 +531,7 @@ const EmployeeData = () => {
                     ))}
                   </select>
                 </div>
+
                 <div className="form-group">
                   <label>Email:</label>
                   <input name="email" type="email" value={editedEmployee?.email || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
