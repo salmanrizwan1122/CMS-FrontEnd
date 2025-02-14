@@ -11,99 +11,6 @@ const EmployeeData = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedEmployee, setEditedEmployee] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
-
-
-  // const employees = [
-  //   {
-  //     id: 1,
-  //     name: "John Doe",
-  //     designation: "Software Engineer",
-  //     email: "johndoe@example.com",
-  //     phone: "+923236326126",
-  //     image: "/man.png",
-  //     monthlyleave: 2,
-  //     joiningdate: "2022/10/12"
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Jane Smith",
-  //     designation: "Product Manager",
-  //     email: "janesmith@example.com",
-  //     phone: "+923236326127",
-  //     image: "/man.png",
-  //     monthlyleave: 2,
-  //     joiningdate: "2022/10/12"
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Michael Brown",
-  //     designation: "UI/UX Designer",
-  //     email: "michaelbrown@example.com",
-  //     phone: "+923236326128",
-  //     image: "/man.png",
-  //     monthlyleave: 2,
-  //     joiningdate: "2022/10/12"
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Emily Johnson",
-  //     designation: "QA Engineer",
-  //     email: "emilyjohnson@example.com",
-  //     phone: "+923236326129",
-  //     image: "/man.png",
-  //     monthlyleave: 2,
-  //     joiningdate: "2022/10/12"
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Emily Johnson",
-  //     designation: "QA Engineer",
-  //     email: "emilyjohnson@example.com",
-  //     phone: "+923236326129",
-  //     image: "/man.png",
-  //     monthlyleave: 2,
-  //     joiningdate: "2022/10/12"
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Emily Johnson",
-  //     designation: "QA Engineer",
-  //     email: "emilyjohnson@example.com",
-  //     phone: "+923236326129",
-  //     image: "/man.png",
-  //     monthlyleave: 2,
-  //     joiningdate: "2022/10/12"
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Emily Johnson",
-  //     designation: "QA Engineer",
-  //     email: "emilyjohnson@example.com",
-  //     phone: "+923236326129",
-  //     image: "/man.png",
-  //     monthlyleave: 2,
-  //     joiningdate: "2022/10/12"
-  //   },
-  //   {
-  //     id: 8,
-  //     name: "Emily Johnson",
-  //     designation: "QA Engineer",
-  //     email: "emilyjohnson@example.com",
-  //     phone: "+923236326129",
-  //     image: "/man.png",
-  //     monthlyleave: 2,
-  //     joiningdate: "2022/10/12"
-  //   }, {
-  //     id: 9,
-  //     name: "Emily Johnson",
-  //     designation: "QA Engineer",
-  //     email: "emilyjohnson@example.com",
-  //     phone: "+923236326129",
-  //     image: "/man.png",
-  //     monthlyleave: 2,
-  //     joiningdate: "2022/10/12"
-  //   },
-  // ];
   const [departments, setDepartments] = useState([]);
   const [designations, setDesignations] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -113,79 +20,71 @@ const EmployeeData = () => {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        // Get the token from sessionStorage
-        const token = sessionStorage.getItem("token");
-
-        // If the token is not available, throw an error
-        if (!token) {
-          throw new Error("No token found in session storage.");
-        }
-
-        // Make the API request with the token in the Authorization header
-        const response = await fetch(`${API_BASE_URL}users/api/get-all/`, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-
-        // Check if the response is successful
-        if (!response.ok) {
-          throw new Error(`Failed to fetch employees: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        setEmployees(data.users);
-
-        // Set default department and designation based on the first employee (or any employee you choose)
-        if (data.users.length > 0) {
-          const firstEmployee = data.users[0];
-          setSelectedDepartment(firstEmployee.department?.id || "");
-          setSelectedDesignation(firstEmployee.designation?.id || "");
-        }
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-        alert(`Error: ${error.message}`);
-      }
-    };
 
     fetchEmployees();
   }, []);
+  const fetchEmployees = async () => {
+    try {
+      const token = sessionStorage.getItem("token");
 
+      if (!token) {
+        throw new Error("No token found in session storage.");
+      }
+      const response = await fetch(`${API_BASE_URL}users/api/get-all/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch employees: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setEmployees(data.users);
+      if (data.users.length > 0) {
+        const firstEmployee = data.users[0];
+        setSelectedDepartment(firstEmployee.department?.id || "");
+        setSelectedDesignation(firstEmployee.designation?.id || "");
+        setSelectedRole(firstEmployee.roles.length > 0 ? firstEmployee.roles[0].id : "");
+      }
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+      alert(`Error: ${error.message}`);
+    }
+  };
   useEffect(() => {
     const fetchRoles = async () => {
       try {
         const token = sessionStorage.getItem("token");
-  
+
         if (!token) {
           throw new Error("No token found in session storage.");
         }
-  
+
         const roleResponse = await fetch(`${API_BASE_URL}/roles/api/get-all/`, {
           headers: {
             Authorization: `Token ${token}`,
           },
         });
-  
+
         if (!roleResponse.ok) {
           throw new Error(`Failed to fetch role: ${roleResponse.statusText}`);
         }
-  
+
         const roleData = await roleResponse.json();
         setRoles(roleData.roles);
         console.log("Roles fetched:", roleData.roles);
-  
+
         // If a department is selected, update the designations
-  
+
       } catch (error) {
         console.error("Error fetching roles:", error);
         alert(`Error: ${error.message}`);
       }
     };
-  
+
     fetchRoles();
-  }, []); 
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -195,10 +94,8 @@ const EmployeeData = () => {
           throw new Error(`Failed to fetch departments: ${departmentResponse.statusText}`);
         }
         const departmentData = await departmentResponse.json();
-        setDepartments(departmentData.departments); // Adjust to access the 'departments' array
+        setDepartments(departmentData.departments);
         console.log("Departments fetched:", departmentData.departments);
-
-        // If a department is selected, update the designations
         if (selectedDepartment) {
           const department = departmentData.departments.find(dept => dept.id === selectedDepartment);
           if (department) {
@@ -211,10 +108,8 @@ const EmployeeData = () => {
         alert(`Error: ${error.message}`);
       }
     };
-
     fetchData();
   }, [selectedDepartment]);
-
   const handleDepartmentChange = (e) => {
     const departmentId = parseInt(e.target.value);
     setSelectedDepartment(departmentId);
@@ -224,40 +119,30 @@ const EmployeeData = () => {
     const roleId = parseInt(e.target.value);
     setSelectedRole(roleId);
   };
-  // Handle Department selection
-
-
   const openModal = (employee) => {
     setSelectedEmployee(employee);
     setEditedEmployee({ ...employee });
     setIsEditing(false);
     setIsAdding(false);
-    
-    // Reset the dropdown values when opening the modal in read mode
     if (!isAdding) {
       setSelectedDepartment(employee?.department?.id || "");
-      setSelectedDesignation(employee?.designation?.id || ""); 
-      setSelectedRole(employee?.role?.id || "")
+      setSelectedDesignation(employee?.designation?.id || "");
+      setSelectedRole(employee?.roles.length > 0 ? employee.roles[0].id : "");
     }
   };
-
   const closeModal = () => {
     setSelectedEmployee(null);
     setIsEditing(false);
     setIsAdding(false);
-    setSelectedDepartment(""); 
-  setSelectedDesignation(""); 
-  setSelectedRole("")
+    setSelectedDepartment("");
+    setSelectedDesignation("");
+    setSelectedRole("")
   };
-  // Enable Editing
   const handleEditClick = () => {
     setIsEditing(true);
   };
-
-  // Cancel Editing (Reset to original data)
   const handleCancelClick = () => {
     if (isAdding) {
-      // If adding a new employee, reset to default empty fields
       setEditedEmployee({
         id: "",
         name: "",
@@ -266,25 +151,24 @@ const EmployeeData = () => {
         phone: "",
         image: "/man.png",
         department: "",
-        cnic: "",
+        cnicno: "",
         role: "",
-        joiningdate: "",
+        joining_date: "",
         address: "",
+        age: "",
+        totalperiod: "",
+        username:"",
+        password:""
       });
       setIsAdding(false); // Exit add mode
     } else {
-      // If editing an existing employee, reset to original data
       setEditedEmployee(selectedEmployee);
       setIsEditing(false);
     }
   };
-
-
-  // Handle Input Change
   const handleChange = (e) => {
     setEditedEmployee({ ...editedEmployee, [e.target.name]: e.target.value });
   };
-
   const openAddEmployeeModal = () => {
     setIsAdding(true);
     setSelectedEmployee(null);
@@ -296,18 +180,76 @@ const EmployeeData = () => {
       phone: "",
       image: "",
       department: "",
-      cnic: "",
+      cnicno: "",
       role: "",
-      joiningdate: "",
+      joining_date: "",
       address: "",
+      age: "",
+      username : "",
+      totalperiod: "",
+      password:""
     });
- 
+    setSelectedRole("");
   };
-  // Handle Update Click
+  const updateEmployee = async (employeeId, updatedData) => {
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found in session storage.");
+      }
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Token ${token}`);
+      myHeaders.append("Content-Type", "application/json");
+      const raw = JSON.stringify(updatedData);
+      const requestOptions = {
+        method: "Post", // 
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      const response = await fetch(
+        `${API_BASE_URL}users/api/${employeeId}/edit/`,
+        requestOptions
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to update employee: ${response.statusText}`);
+      }
+      const result = await response.json();
+      console.log("Employee updated successfully:", result);
+      setEmployees((prevEmployees) =>
+        prevEmployees.map((emp) =>
+          emp.id === employeeId ? { ...emp, ...updatedData } : emp
+        )
+      );
+      closeModal();
+      setIsEditing(false);
+      alert("Employee updated successfully!");
+    } catch (error) {
+      console.error("Error updating employee:", error);
+      alert(`Error: ${error.message}`);
+    }
+    finally {
+      fetchEmployees()
+    }
+  };
+
   const handleUpdateClick = () => {
-    console.log("Updated Employee:", editedEmployee);
-    setSelectedEmployee(editedEmployee);
-    setIsEditing(false);
+    if (editedEmployee) {
+      const updatedData = {
+        first_name: editedEmployee.name, 
+        email: editedEmployee.email,
+        age: editedEmployee.age,
+        address: editedEmployee.address,
+        department_id: selectedDepartment,
+        designation_id: selectedDesignation,
+        cnicno: editedEmployee.cnicno,
+        role_id: selectedRole,
+        phone: editedEmployee.phone,
+        joining_date: editedEmployee.joining_date,
+      };
+
+      updateEmployee(editedEmployee.id, updatedData);
+    }
   };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -321,28 +263,22 @@ const EmployeeData = () => {
   };
   const handleSaveNewEmployee = () => {
     console.log("New Employee Added:", editedEmployee);
-    // Here, you can update your employee state with the new employee
     setIsAdding(false);
     closeModal();
   };
-  const calculateJobPeriod = (joiningDate) => {
-    if (!joiningDate) return "";
-
-    const startDate = new Date(joiningDate);
+  const calculateJobPeriod = (joining_Date) => {
+    if (!joining_Date) return "";
+    const startDate = new Date(joining_Date);
     const currentDate = new Date();
-
     let years = currentDate.getFullYear() - startDate.getFullYear();
     let months = currentDate.getMonth() - startDate.getMonth();
-
     if (months < 0) {
       years--;
       months += 12;
     }
-
     return `${years} years ${months} months`;
   };
   const [permissions, setPermissions] = useState([]);
-
   useEffect(() => {
     // Check if window and sessionStorage are available (client-side)
     if (typeof window !== "undefined" && sessionStorage) {
@@ -353,15 +289,15 @@ const EmployeeData = () => {
     return permissions.some(permission => permission.action === action && permission.module === module);
   };
   useEffect(() => {
-    if (editedEmployee?.joiningdate) {
-      const jobPeriod = calculateJobPeriod(editedEmployee.joiningdate);
+    if (editedEmployee?.joining_date) {
+      const jobPeriod = calculateJobPeriod(editedEmployee.joining_date);
+      console.log(jobPeriod)
       setEditedEmployee((prevState) => ({
         ...prevState,
         totalperiod: jobPeriod,
       }));
     }
-  }, [editedEmployee?.joiningdate]);
-
+  }, [editedEmployee?.joining_date]);
   return (
     <Layout>
       <div className="employee-container">
@@ -383,7 +319,7 @@ const EmployeeData = () => {
             </div>
             <div className="search-field">
               <img src="search.png" alt="Search" />
-              <input type="text" placeholder="Search by company" className="search-bar" />
+              <input type="text" placeholder="Search by department" className="search-bar" />
             </div>
             <div className="search-field">
               <img src="search.png" alt="Search" />
@@ -391,12 +327,9 @@ const EmployeeData = () => {
             </div>
           </div>
         </div>
-
-        {/* Employee Cards */}
         <div className="employee-card-main">
           {employees.map((employee) => (
             <div className="employee-card" key={employee.id} onClick={() => openModal(employee)}>
-
               <div className="employee-image">
                 <img src={employee.image || 'man.png'} alt={employee.name} className="employee-img" />
               </div>
@@ -465,41 +398,63 @@ const EmployeeData = () => {
                     <label>Name:</label>
                     <input name="name" type="text" value={editedEmployee?.name || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
                   </div>
-                  <div className="form-group">
-                    <label>Employee ID:</label>
-                    <input name="id" type="text" value={editedEmployee?.id || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
-                  </div>
+                  {!isAdding && (
+                    <div className="form-group">
+                      <label>Employee ID:</label>
+                      <input name="id" type="text" value={editedEmployee?.id || ""} onChange={handleChange} disabled />
+                    </div>
+                  )}
+
+
                   <div className="form-group">
                     <label>CNIC No:</label>
-                    <input name="cnic" type="text" value={editedEmployee?.cnic || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
+                    <input name="cnicno" type="text" value={editedEmployee?.cnicno || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
                   </div>
                   <div className="form-group">
-                  <label>Role:</label>
-                  <select
-                    value={selectedRole}
-                    onChange={handleRoleChange}
-                    disabled={!(isEditing || isAdding)}
-                  >
-                    <option value="">Select Role</option>
-                    {roles.map((role) => (
-                      <option key={role.id} value={role.id}>
-                        {role.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                    <label>Role:</label>
+                    <select
+                      value={selectedRole}
+                      onChange={handleRoleChange}
+                      disabled={!(isEditing || isAdding)}
+                    >
+                      <option value="">Select Role</option>
+                      {roles.map((role) => (
+                        <option key={role.id} value={role.id}>
+                          {role.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <div className="form-group">
                     <label>Address:</label>
                     <input name="address" type="text" value={editedEmployee?.address || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
                   </div>
                   <div className="form-group">
-                    <label>Monthly leave Balance:</label>
-                    <input name="monthlyleave" type="text" value={editedEmployee?.monthlyleave || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
+                    <label>Age:</label>
+                    <input name="age" type="text" value={editedEmployee?.age || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
                   </div>
                 </div>
               </div>
               {/* Remaining Form Fields */}
               <div className="modal-body">
+              <div className="form-group">
+                  <label>Email:</label>
+                  <input name="email" type="email" value={editedEmployee?.email || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
+                </div>
+                <div className="form-group">
+                  <label>Username:</label>
+                  <input name="username" type="text" value={editedEmployee?.username || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
+                </div>
+                {isAdding && (
+                    <div className="form-group">
+                      <label>Password:</label>
+                      <input name="password" type="password" value={editedEmployee?.password || ""} onChange={handleChange}  />
+                    </div>
+                  )}
+                <div className="form-group">
+                  <label>Phone:</label>
+                  <input name="phone" type="text" value={editedEmployee?.phone || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
+                </div>
                 <div className="form-group">
                   <label>Department:</label>
                   <select
@@ -532,20 +487,13 @@ const EmployeeData = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
-                  <label>Email:</label>
-                  <input name="email" type="email" value={editedEmployee?.email || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
-                </div>
-                <div className="form-group">
-                  <label>Phone:</label>
-                  <input name="phone" type="text" value={editedEmployee?.phone || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
-                </div>
+              
                 <div className="form-group">
                   <label>Joining Date:</label>
                   <input
-                    name="joiningdate"
+                    name="joining_date"
                     type="date"
-                    value={editedEmployee?.joiningdate || ""}
+                    value={editedEmployee?.joining_date || ""}
                     onChange={handleChange}
                     disabled={!isEditing && !isAdding} // Make the dropdown editable only in editing or adding mode
                   />
