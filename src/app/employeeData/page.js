@@ -1,11 +1,9 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Layout from "../component/layout/layout";
 import { Camera } from "lucide-react"; // Import camera icon
 import "./EmployeeData.css";
 import { API_BASE_URL } from "../network/url";
-
 const EmployeeData = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -18,6 +16,8 @@ const EmployeeData = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedDesignation, setSelectedDesignation] = useState("");
   const [employees, setEmployees] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState(null);
 
   useEffect(() => {
     fetchEmployees();
@@ -25,7 +25,6 @@ const EmployeeData = () => {
   const fetchEmployees = async () => {
     try {
       const token = sessionStorage.getItem("token");
-
       if (!token) {
         throw new Error("No token found in session storage.");
       }
@@ -58,7 +57,6 @@ const EmployeeData = () => {
         if (!token) {
           throw new Error("No token found in session storage.");
         }
-
         const roleResponse = await fetch(`${API_BASE_URL}/roles/api/get-all/`, {
           headers: {
             Authorization: `Token ${token}`,
@@ -152,7 +150,7 @@ const EmployeeData = () => {
         username: "",
         password: ""
       });
-      setIsAdding(false); // Exit add mode
+      setIsAdding(false);
     } else {
       setEditedEmployee(selectedEmployee);
       setIsEditing(false);
@@ -295,8 +293,6 @@ const EmployeeData = () => {
       alert(`Error: ${error.message}`);
     }
   };
-
-  
   const calculateJobPeriod = (joining_Date) => {
     if (!joining_Date) return "";
     const startDate = new Date(joining_Date);
@@ -308,6 +304,44 @@ const EmployeeData = () => {
       months += 12;
     }
     return `${years} years ${months} months`;
+  };
+  const handleDeleteClick = (employee) => {
+    setEmployeeToDelete(employee); // Store employee data
+    setShowDeleteModal(true); // Show confirmation modal
+  };
+  const confirmDelete = async () => {
+    if (!employeeToDelete) return;
+
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found in session storage.");
+      }
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Token ${token}`);
+      const requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        body: null,
+        redirect: "follow",
+      };
+
+      const response = await fetch(`${API_BASE_URL}users/api/${employeeToDelete.id}/delete/`, requestOptions);
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.text();
+      console.log("Employee deleted:", result);
+
+      // Close both modals
+      setShowDeleteModal(false);
+      closeModal();
+    } catch (error) {
+      console.error("Delete failed:", error);
+      alert("Failed to delete employee. Please try again.");
+    }
   };
   const [permissions, setPermissions] = useState([]);
   useEffect(() => {
@@ -332,10 +366,9 @@ const EmployeeData = () => {
   return (
     <Layout>
       <div className="employee-container">
-        {/* Search Bars */}
         <h2 className="main-heading">Employee Data</h2>
         <div className="search-bar-container">
-          <div>
+          <div className="add-btn-container">
             {hasPermission("create", "user_management") && (
               <div className="add-btn" onClick={openAddEmployeeModal}>
                 <img src="add.png" alt="Add Employee" />
@@ -362,8 +395,11 @@ const EmployeeData = () => {
           {employees.map((employee) => (
             <div className="employee-card" key={employee.id} onClick={() => openModal(employee)}>
               <div className="employee-image">
-                <img src={`data:image/jpeg;base64,${employee.profile_pic}`} alt="Base64 Image" className="employee-img" />
-
+                <img
+                  src={employee.profile_pic ? `data:image/jpeg;base64,${employee.profile_pic}` : "/man.png"}
+                  alt="Profile"
+                  className="employee-img"
+                />
               </div>
               <div className="employee-info">
                 <h3 className="employee-name">{employee.name}</h3>
@@ -378,15 +414,13 @@ const EmployeeData = () => {
         </div>
         {(selectedEmployee || isAdding) && (
           <div className="modal-overlay" onClick={closeModal}>
-            {/* <span className="close-btn" onClick={closeModal}>&times;</span> */}
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <div className="modal-icons">
-                {/* Edit Button */}
                 {!isEditing && !isAdding && hasPermission("update", "user_management") && (
                   <img className="icon" src="edit.png" onClick={handleEditClick} alt="Edit" />
                 )}
                 {!isEditing && !isAdding && hasPermission("delete", "user_management") && (
-                  <img className="icon" src="delete.png" alt="Delete" />
+                  <img className="icon" src="delete.png" alt="Delete" onClick={() => handleDeleteClick(editedEmployee)} />
                 )}
                 <img className="icon" src="close.png" onClick={closeModal} alt="Close" />
               </div>
@@ -395,7 +429,7 @@ const EmployeeData = () => {
                   <label htmlFor="imageUpload" style={{ cursor: isEditing || isAdding ? "pointer" : "default" }}>
                     <div className="image-wrapper">
                       <img
-                        src={`data:image/png;base64,${editedEmployee.profile_pic}`}
+                        src={editedEmployee.profile_pic ? `data:image/jpeg;base64,${editedEmployee.profile_pic}` : "/man.png"}
                         alt="Base64 Image"
                         className="modal-image"
                       />
@@ -456,7 +490,6 @@ const EmployeeData = () => {
                   </div>
                 </div>
               </div>
-              {/* Remaining Form Fields */}
               <div className="modal-body">
                 <div className="form-group">
                   <label>Email:</label>
@@ -513,7 +546,7 @@ const EmployeeData = () => {
                     type="date"
                     value={editedEmployee?.joining_date || ""}
                     onChange={handleChange}
-                    disabled={!isEditing && !isAdding} // Make the dropdown editable only in editing or adding mode
+                    disabled={!isEditing && !isAdding}
                   />
                 </div>
                 <div className="form-group">
@@ -532,6 +565,22 @@ const EmployeeData = () => {
                   <button className="update-btn" onClick={isAdding ? handleSaveNewEmployee : handleUpdateClick}>
                     {isAdding ? "Save" : "Update"}
                   </button>
+                </div>
+              )}
+              {showDeleteModal && (
+                <div className="delete-modal-overlay">
+                  <div className="delete-modal-content">
+                    <div>
+                    <img className="icon" src="delete.png" alt="Delete" onClick={() => handleDeleteClick(editedEmployee)} />
+
+                    </div>
+                    <h2>Are you Sure?</h2>
+                    <p>Do you really want to Remove this? {employeeToDelete?.name}?</p>
+                    <div className="delete-modal-footer">
+                      <button className="No-btn" onClick={() => setShowDeleteModal(false)}>No</button>
+                      <button className="Yes-btn" onClick={confirmDelete}>Yes</button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
