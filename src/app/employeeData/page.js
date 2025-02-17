@@ -20,7 +20,6 @@ const EmployeeData = () => {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-
     fetchEmployees();
   }, []);
   const fetchEmployees = async () => {
@@ -35,7 +34,6 @@ const EmployeeData = () => {
           Authorization: `Token ${token}`,
         },
       });
-
       if (!response.ok) {
         throw new Error(`Failed to fetch employees: ${response.statusText}`);
       }
@@ -66,23 +64,17 @@ const EmployeeData = () => {
             Authorization: `Token ${token}`,
           },
         });
-
         if (!roleResponse.ok) {
           throw new Error(`Failed to fetch role: ${roleResponse.statusText}`);
         }
-
         const roleData = await roleResponse.json();
         setRoles(roleData.roles);
         console.log("Roles fetched:", roleData.roles);
-
-        // If a department is selected, update the designations
-
       } catch (error) {
         console.error("Error fetching roles:", error);
         alert(`Error: ${error.message}`);
       }
     };
-
     fetchRoles();
   }, []);
   useEffect(() => {
@@ -149,7 +141,7 @@ const EmployeeData = () => {
         designation: "",
         email: "",
         phone: "",
-        image: "/man.png",
+        profile_pic: "/man.png",
         department: "",
         cnicno: "",
         role: "",
@@ -157,8 +149,8 @@ const EmployeeData = () => {
         address: "",
         age: "",
         totalperiod: "",
-        username:"",
-        password:""
+        username: "",
+        password: ""
       });
       setIsAdding(false); // Exit add mode
     } else {
@@ -178,16 +170,16 @@ const EmployeeData = () => {
       designation: "",
       email: "",
       phone: "",
-      image: "",
+      profile_pic: "",
       department: "",
       cnicno: "",
       role: "",
       joining_date: "",
       address: "",
       age: "",
-      username : "",
+      username: "",
       totalperiod: "",
-      password:""
+      password: ""
     });
     setSelectedRole("");
   };
@@ -224,19 +216,16 @@ const EmployeeData = () => {
       closeModal();
       setIsEditing(false);
       alert("Employee updated successfully!");
+      fetchEmployees()
     } catch (error) {
       console.error("Error updating employee:", error);
       alert(`Error: ${error.message}`);
     }
-    finally {
-      fetchEmployees()
-    }
   };
-
   const handleUpdateClick = () => {
     if (editedEmployee) {
       const updatedData = {
-        first_name: editedEmployee.name, 
+        first_name: editedEmployee.name,
         email: editedEmployee.email,
         age: editedEmployee.age,
         address: editedEmployee.address,
@@ -246,8 +235,8 @@ const EmployeeData = () => {
         role_id: selectedRole,
         phone: editedEmployee.phone,
         joining_date: editedEmployee.joining_date,
+        profile_pic: editedEmployee.profile_pic, // Include the profile_pic field
       };
-
       updateEmployee(editedEmployee.id, updatedData);
     }
   };
@@ -256,16 +245,58 @@ const EmployeeData = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setEditedEmployee({ ...editedEmployee, image: reader.result });
+        setEditedEmployee({ ...editedEmployee, profile_pic: reader.result });  // No need to split or alter the result
       };
       reader.readAsDataURL(file);
     }
   };
-  const handleSaveNewEmployee = () => {
-    console.log("New Employee Added:", editedEmployee);
-    setIsAdding(false);
-    closeModal();
+  const handleSaveNewEmployee = async () => {
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found in session storage.");
+      }
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Token ${token}`);
+      myHeaders.append("Content-Type", "application/json");
+      const raw = JSON.stringify({
+        first_name: editedEmployee.name,
+        email: editedEmployee.email,
+        password: editedEmployee.password,
+        age: editedEmployee.age,
+        address: editedEmployee.address,
+        phone: editedEmployee.phone,
+        department_id: selectedDepartment,
+        designation_id: selectedDesignation,
+        cnicno: editedEmployee.cnicno,
+        role_id: selectedRole,
+        username: editedEmployee.username,
+        joining_date: editedEmployee.joining_date,
+        profile_pic: editedEmployee.profile_pic
+      });
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      const response = await fetch(`${API_BASE_URL}users/api/create/`, requestOptions);
+      if (!response.ok) {
+        throw new Error(`Failed to add new employee: ${response.statusText}`);
+      }
+      const result = await response.json();
+      console.log("New Employee Added:", result);
+      fetchEmployees();
+      setIsAdding(false);
+      closeModal();
+      alert("Employee added successfully!");
+    } catch (error) {
+      console.error("Error adding new employee:", error);
+      alert(`Error: ${error.message}`);
+    }
   };
+
+  
   const calculateJobPeriod = (joining_Date) => {
     if (!joining_Date) return "";
     const startDate = new Date(joining_Date);
@@ -331,7 +362,8 @@ const EmployeeData = () => {
           {employees.map((employee) => (
             <div className="employee-card" key={employee.id} onClick={() => openModal(employee)}>
               <div className="employee-image">
-                <img src={employee.image || 'man.png'} alt={employee.name} className="employee-img" />
+                <img src={`data:image/jpeg;base64,${employee.profile_pic}`} alt="Base64 Image" className="employee-img" />
+
               </div>
               <div className="employee-info">
                 <h3 className="employee-name">{employee.name}</h3>
@@ -353,28 +385,20 @@ const EmployeeData = () => {
                 {!isEditing && !isAdding && hasPermission("update", "user_management") && (
                   <img className="icon" src="edit.png" onClick={handleEditClick} alt="Edit" />
                 )}
-                {/* Delete Button */}
                 {!isEditing && !isAdding && hasPermission("delete", "user_management") && (
                   <img className="icon" src="delete.png" alt="Delete" />
                 )}
                 <img className="icon" src="close.png" onClick={closeModal} alt="Close" />
               </div>
-
-
-              {/* Header Section (Image + Basic Details) */}
               <div className="modal-header">
-                {/* Image Upload Section */}
                 <div className="image-upload-container">
                   <label htmlFor="imageUpload" style={{ cursor: isEditing || isAdding ? "pointer" : "default" }}>
                     <div className="image-wrapper">
-                      {/* Employee Image */}
                       <img
-                        src={editedEmployee?.image || "man.png"}
-                        alt="Employee"
+                        src={`data:image/png;base64,${editedEmployee.profile_pic}`}
+                        alt="Base64 Image"
                         className="modal-image"
                       />
-
-                      {/* Show Camera Icon Only in Edit/Add Mode */}
                       {(isEditing || isAdding) && (
                         <div className="camera-icon">
                           <Camera size={24} color="white" />
@@ -392,7 +416,6 @@ const EmployeeData = () => {
                     />
                   )}
                 </div>
-
                 <div className="modal-info">
                   <div className="form-group">
                     <label>Name:</label>
@@ -404,8 +427,6 @@ const EmployeeData = () => {
                       <input name="id" type="text" value={editedEmployee?.id || ""} onChange={handleChange} disabled />
                     </div>
                   )}
-
-
                   <div className="form-group">
                     <label>CNIC No:</label>
                     <input name="cnicno" type="text" value={editedEmployee?.cnicno || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
@@ -437,7 +458,7 @@ const EmployeeData = () => {
               </div>
               {/* Remaining Form Fields */}
               <div className="modal-body">
-              <div className="form-group">
+                <div className="form-group">
                   <label>Email:</label>
                   <input name="email" type="email" value={editedEmployee?.email || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
                 </div>
@@ -446,11 +467,11 @@ const EmployeeData = () => {
                   <input name="username" type="text" value={editedEmployee?.username || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
                 </div>
                 {isAdding && (
-                    <div className="form-group">
-                      <label>Password:</label>
-                      <input name="password" type="password" value={editedEmployee?.password || ""} onChange={handleChange}  />
-                    </div>
-                  )}
+                  <div className="form-group">
+                    <label>Password:</label>
+                    <input name="password" type="password" value={editedEmployee?.password || ""} onChange={handleChange} />
+                  </div>
+                )}
                 <div className="form-group">
                   <label>Phone:</label>
                   <input name="phone" type="text" value={editedEmployee?.phone || ""} onChange={handleChange} readOnly={!isEditing && !isAdding} />
@@ -470,7 +491,6 @@ const EmployeeData = () => {
                     ))}
                   </select>
                 </div>
-
                 <div className="form-group">
                   <label>Designation:</label>
                   <select
@@ -486,8 +506,6 @@ const EmployeeData = () => {
                     ))}
                   </select>
                 </div>
-
-              
                 <div className="form-group">
                   <label>Joining Date:</label>
                   <input
