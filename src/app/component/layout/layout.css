@@ -1,8 +1,8 @@
 /* Sidebar Styles */
 
 .sidebar {
-    width: 270px;
-    height: 100vh;
+    width: 300px;
+   max-height: 100vh;
     background-color: #0E2447;
     color: white;
     position: fixed;
@@ -23,22 +23,25 @@
     padding: 10px 15px;
     margin-top: 5%;
 }
-.menu_image{
+
+.menu_image {
     background-color: #983232;
     border-radius: 6px;
-    padding:6px
+    padding: 6px
 }
-.topmenu_image{
+
+.topmenu_image {
     background-color: white;
     border-radius: 10px;
-    width:45px;
+    width: 45px;
     height: 45px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
 }
-.userinfo{
+
+.userinfo {
     display: flex;
     align-items: center;
     text-align: end;
@@ -46,34 +49,40 @@
     border-left: 1px solid white;
     color: white;
     padding: 0px 10px;
-  }
-  .user-img img {
+}
+
+.user-img img {
     width: 50px;
-  }
-  .user-name{
-    font-family: Roboto;
-font-weight: 500;
-font-size: 15px;
-line-height: 28.13px;
-letter-spacing: -3%;
+}
 
-  }
-  .user-role{
+.user-name {
     font-family: Roboto;
-font-weight: 300;
-font-size: 12px;
-line-height: 23.44px;
-letter-spacing: -3%;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 28.13px;
+    letter-spacing: -3%;
 
-  }
+}
+
+.user-role {
+    font-family: Roboto;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 23.44px;
+    letter-spacing: -3%;
+
+}
+
 .topmenu_image img {
     width: 25px;
 }
-.menu_list{
+
+.menu_list {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
+
 .sidebar-closed {
     width: 60px;
 }
@@ -89,13 +98,16 @@ letter-spacing: -3%;
 .dashboard-title {
     font-size: 18px;
 }
+
 .menu-item.active {
     background-color: white;
     border-radius: 6px;
 }
+
 .menu-item.active .menu-link .menu_image {
-    background-color: #0E2447; 
+    background-color: #0E2447;
 }
+
 .menu-item.active .menu-link .show {
     color: black;
 }
@@ -109,11 +121,13 @@ letter-spacing: -3%;
 .menu-list {
     list-style: none;
     padding: 0;
-    
+
 }
-.menu_image img{
+
+.menu_image img {
     width: 25px;
 }
+
 .menu-item {
     padding: 10px 15px;
     cursor: pointer;
@@ -131,6 +145,9 @@ letter-spacing: -3%;
     line-height: 37.5px;
     letter-spacing: -3%;
     color: white;
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .menu-link {
@@ -149,12 +166,12 @@ letter-spacing: -3%;
 
 .submenu {
     list-style: none;
-    padding-left: 20px;
-    background-color: #34495e;
+    padding: 10px 15px;
+    border-left: 1px solid;
+    margin-left: 15px;
 }
 
 .submenu-item {
-    padding: 8px 15px;
     cursor: pointer;
 }
 
@@ -164,7 +181,7 @@ letter-spacing: -3%;
 }
 
 
-.logout{
+.logout {
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -172,21 +189,25 @@ letter-spacing: -3%;
     border-radius: 8px;
     background-color: #1E3A67;
     cursor: pointer;
-    
+
 }
-.menu-container{
+
+.menu-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 90vh;
-    padding-bottom: 30px ;
+    padding-bottom: 30px;
 }
+
 .logout img {
     width: 25px;
 }
+
 .logout button {
-cursor: pointer;
+    cursor: pointer;
 }
+
 .topbar-title {
     font-size: 20px;
     font-weight: bold;
@@ -202,8 +223,8 @@ cursor: pointer;
 }
 
 .content-area {
-    margin-left: 250px;
-    width: calc(100% - 250px);
+    margin-left: 300px;
+    width: calc(100% - 300px);
     transition: margin-left 0.3s;
 }
 
@@ -211,20 +232,16 @@ cursor: pointer;
     margin-left: 60px;
     width: calc(100% - 60px);
 }
-
 .main-content {
     padding: 20px;
 }
-
-
-
 .topbar {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 16px;
-    padding: 15px 50px;
-    background-color:#0E2447;
+    padding: 15px 20px;
+    background-color: #0E2447;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -263,5 +280,3 @@ cursor: pointer;
     font-weight: bold;
     color: white;
 }
-
-

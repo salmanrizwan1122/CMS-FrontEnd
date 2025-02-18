@@ -16,11 +16,13 @@
   margin: 20px 0px;
   justify-content: space-between;
 }
+
 .search-bar-container {
   display: flex;
   margin: 20px 0px;
   justify-content: space-between;
 }
+
 @media (max-width: 1000px) {
   .search-bar-container {
     flex-direction: column;
@@ -62,8 +64,9 @@ textarea:focus {
   outline: none;
   border: none;
 }
-.add-btn-container{
-width: fit-content;
+
+.add-btn-container {
+  width: fit-content;
 }
 
 .add-btn {
@@ -76,9 +79,11 @@ width: fit-content;
   gap: 10px;
   cursor: pointer;
 }
-.add-btn button{
+
+.add-btn button {
   cursor: pointer;
 }
+
 .add-btn img {
   width: 20px;
 }
@@ -88,18 +93,21 @@ width: fit-content;
   justify-content: space-between;
   width: 70%;
 }
+
 @media (max-width: 1000px) {
   .search-container {
     width: 100%;
-margin-top: 2%;
+    margin-top: 2%;
   }
 }
+
 @media (max-width: 730px) {
   .search-container {
-flex-direction: column;    
-gap: 5px;
+    flex-direction: column;
+    gap: 5px;
   }
 }
+
 .search-bar {
   border: none
 }
@@ -149,7 +157,8 @@ gap: 5px;
 
 .employee-image img {
   width: 80px;
-  height: 80px;       /* Set height */
+  height: 80px;
+  /* Set height */
   border-radius: 50%;
   object-fit: cover;
 }
@@ -283,8 +292,7 @@ gap: 5px;
 }
 
 .form-group input,
-.form-group textarea
- {
+.form-group textarea {
   padding: 10px;
   border: 1px solid black;
   border-radius: 16px;
@@ -293,9 +301,10 @@ gap: 5px;
   width: 100%;
   resize: none;
 }
+
 .form-group select {
- 
-  background: #f4f4f4 ;
+
+  background: #f4f4f4;
   background-size: 16px;
   padding: 10px;
   border-radius: 16px;
@@ -305,7 +314,8 @@ gap: 5px;
 }
 
 .form-group select:focus {
-  outline: none; /* Optional: remove the focus outline for a cleaner look */
+  outline: none;
+  /* Optional: remove the focus outline for a cleaner look */
 }
 
 .close-btn {
@@ -354,7 +364,8 @@ gap: 5px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 10px; /* Space between elements */
+  gap: 10px;
+  /* Space between elements */
 }
 
 
@@ -364,7 +375,8 @@ gap: 5px;
 }
 
 .modal-image {
-  width: 160px;  /* Increased from 120px */
+  width: 160px;
+  /* Increased from 120px */
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid #ddd;
@@ -373,11 +385,14 @@ gap: 5px;
 /* Camera Icon (Adjust Position and Size) */
 .camera-icon {
   position: absolute;
-  bottom: 10px; /* Adjusted for larger image */
+  bottom: 10px;
+  /* Adjusted for larger image */
   right: 10px;
   background: #000000;
-  width: 40px;  /* Increased size */
-  height: 40px; /* Increased size */
+  width: 40px;
+  /* Increased size */
+  height: 40px;
+  /* Increased size */
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -407,7 +422,7 @@ gap: 5px;
   background: #823534;
   padding: 30px;
   border-radius: 20px;
-  width: 40%;
+  width: 35%;
   color: white;
   max-height: 800px;
   overflow: auto;
@@ -418,13 +433,46 @@ gap: 5px;
   display: flex;
   justify-content: end;
   margin-top: 3%;
-  gap:10px
+  gap: 10px
 }
-.No-btn{
+.delete-modal-title {
+  font-family: Roboto;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 46.88px;
+  letter-spacing: 0%;
+}
+
+.delete-modal-icon {
+  margin-bottom: 4%;
+  display: flex;
+  justify-content: center;
+}
+.delete-modal-desc {
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 37.5px;
+  letter-spacing: 0%;
+  color: #E1E1E1;
+
+}
+.no-btn {
   background: #0E2447;
   color: white;
-  padding: 12px 30px;
-  border-radius: 12px;
+  padding: 10px 35px;
+  border-radius: 10px;
+  font-family: Roboto;
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+.yes-btn {
+  background: #FFFFFF;
+  color: black;
+  padding: 10px 35px;
+  border-radius: 10px;
   font-family: Roboto;
   font-weight: 600;
   font-size: 20px;

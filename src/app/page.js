@@ -1,14 +1,19 @@
 'use client'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
   const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true); // Show loader
 
     try {
       const response = await fetch("http://127.0.0.1:8000/auth/api/login/", {
@@ -36,7 +41,9 @@ export default function Login() {
       router.push("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
-      alert("Invalid credentials!");
+      toast.error("Invalid credentials!"); // Show toast on error
+    } finally {
+      setLoading(false); // Hide loader
     }
   };
 
@@ -74,8 +81,12 @@ export default function Login() {
             <button className="forgot">Forgot Password?</button>
           </div>
           <div className="btn">
-            <button type="submit" className="login_btn">
-              Log in
+            <button type="submit" className="login_btn" disabled={loading}>
+              {loading ? (
+                <CircularProgress size={24} color="inherit" /> // MUI CircularProgress as the loader
+              ) : (
+                "Log in"
+              )}
             </button>
           </div>
         </form>

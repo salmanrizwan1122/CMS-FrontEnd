@@ -306,12 +306,11 @@ const EmployeeData = () => {
     return `${years} years ${months} months`;
   };
   const handleDeleteClick = (employee) => {
-    setEmployeeToDelete(employee); // Store employee data
-    setShowDeleteModal(true); // Show confirmation modal
+    setEmployeeToDelete(employee); 
+    setShowDeleteModal(true); 
   };
   const confirmDelete = async () => {
     if (!employeeToDelete) return;
-
     try {
       const token = sessionStorage.getItem("token");
       if (!token) {
@@ -325,19 +324,15 @@ const EmployeeData = () => {
         body: null,
         redirect: "follow",
       };
-
       const response = await fetch(`${API_BASE_URL}users/api/${employeeToDelete.id}/delete/`, requestOptions);
-
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-
       const result = await response.text();
       console.log("Employee deleted:", result);
-
-      // Close both modals
       setShowDeleteModal(false);
       closeModal();
+      fetchEmployees();
     } catch (error) {
       console.error("Delete failed:", error);
       alert("Failed to delete employee. Please try again.");
@@ -345,7 +340,6 @@ const EmployeeData = () => {
   };
   const [permissions, setPermissions] = useState([]);
   useEffect(() => {
-    // Check if window and sessionStorage are available (client-side)
     if (typeof window !== "undefined" && sessionStorage) {
       const permissionsFromSession = JSON.parse(sessionStorage.getItem("permissions")) || [];
       setPermissions(permissionsFromSession);
@@ -570,15 +564,20 @@ const EmployeeData = () => {
               {showDeleteModal && (
                 <div className="delete-modal-overlay">
                   <div className="delete-modal-content">
-                    <div>
-                    <img className="icon" src="delete.png" alt="Delete" onClick={() => handleDeleteClick(editedEmployee)} />
-
+                    <div className="delete-modal-icon">
+                      {/* <img className="icon" src="delete.png" alt="Delete" onClick={() => handleDeleteClick(editedEmployee)} /> */}
+                      <svg onClick={() => handleDeleteClick(editedEmployee)} width="60" height="74" viewBox="0 0 60 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3.31821 42.1117C3.31821 35.9654 3.31404 29.8191 3.3203 23.6727C3.32239 21.7213 4.37634 20.3856 6.11694 20.0809C8.0391 19.7428 9.84439 21.1537 9.98631 23.1134C10.0072 23.3993 9.99675 23.6852 9.99675 23.9733C9.99675 35.98 9.99675 47.9847 9.99675 59.9914C9.99675 63.9839 12.7162 66.6992 16.717 66.7013C25.5702 66.7013 34.4235 66.7013 43.2746 66.7013C47.2734 66.7013 49.9949 63.9818 49.9949 59.9914C49.9949 47.8824 49.9949 35.7713 49.997 23.6623C49.997 21.786 51.0008 20.4462 52.6413 20.1101C54.5259 19.722 56.279 20.9178 56.6004 22.8254C56.6609 23.1823 56.6734 23.5496 56.6734 23.9127C56.6776 35.9696 56.6797 48.0285 56.6755 60.0853C56.6734 66.695 52.2552 72.0044 45.7624 73.1857C44.9985 73.3255 44.2096 73.3735 43.4311 73.3756C34.4736 73.3881 25.5181 73.3902 16.5605 73.3819C9.1181 73.3756 3.32865 67.5945 3.31821 60.1626C3.31195 54.1435 3.31821 48.1287 3.31821 42.1117Z" fill="white" />
+                        <path d="M43.3188 10.0068C44.1912 10.0068 44.9425 10.0068 45.6959 10.0068C49.2877 10.0068 52.8795 9.99015 56.4734 10.0131C58.909 10.0298 60.5118 12.0981 59.8502 14.3103C59.4579 15.621 58.3058 16.5602 56.943 16.6749C56.7614 16.6896 56.5798 16.6875 56.3962 16.6875C38.8003 16.6875 21.2024 16.6895 3.60655 16.6854C1.48611 16.6875 -0.0165586 15.2745 0.000137757 13.3211C0.0168341 11.4052 1.50489 10.0173 3.59611 10.011C7.60532 9.9985 11.6145 10.0068 15.6216 10.0068C15.9305 10.0068 16.2415 10.0068 16.6777 10.0068C16.6777 9.675 16.6777 9.4016 16.6777 9.1282C16.6777 7.25404 16.6652 5.37987 16.6819 3.50362C16.7006 1.41032 18.0593 0.0182616 20.1547 0.0140875C26.7143 -0.00469584 33.2738 -0.00469584 39.8334 0.0140875C41.9351 0.0203487 43.2958 1.40406 43.3125 3.49945C43.3334 5.62823 43.3188 7.7591 43.3188 10.0068ZM23.3583 9.93797C27.8246 9.93797 32.2241 9.93797 36.6131 9.93797C36.6131 8.81932 36.6131 7.77162 36.6131 6.73436C32.1635 6.73436 27.7807 6.73436 23.3583 6.73436C23.3583 7.81128 23.3583 8.84019 23.3583 9.93797Z" fill="white" />
+                        <path d="M19.9979 41.6968C19.9979 37.792 19.9853 33.8892 20.0062 29.9843C20.0146 28.3544 21.1541 27.05 22.7444 26.7411C24.1866 26.4614 25.7456 27.2399 26.3341 28.6278C26.5512 29.1391 26.6618 29.7339 26.6639 30.2911C26.6847 37.8921 26.6847 45.4911 26.6743 53.0921C26.6722 55.2188 25.2468 56.7152 23.2954 56.6964C21.3795 56.6776 20.002 55.1854 20 53.0983C19.9937 49.2978 19.9958 45.4973 19.9979 41.6968Z" fill="white" />
+                        <path d="M39.9995 41.711C39.9995 45.5888 40.0099 49.4686 39.9932 53.3463C39.987 54.922 39.0123 56.1596 37.5305 56.5687C36.1051 56.9631 34.544 56.3892 33.8427 55.0806C33.5359 54.5088 33.3439 53.8013 33.3418 53.1543C33.3084 45.5011 33.3105 37.85 33.3272 30.1968C33.3314 28.1369 34.7965 26.6655 36.7228 26.6948C38.6095 26.7219 39.9932 28.2058 39.9974 30.2344C40.0057 34.0599 40.0016 37.8855 39.9995 41.711Z" fill="white" />
+                      </svg>
                     </div>
-                    <h2>Are you Sure?</h2>
-                    <p>Do you really want to Remove this? {employeeToDelete?.name}?</p>
+                    <h2 className="delete-modal-title" >Are you Sure?</h2>
+                    <p className="delete-modal-desc">Do you really want to Remove this? {employeeToDelete?.name}?</p>
                     <div className="delete-modal-footer">
-                      <button className="No-btn" onClick={() => setShowDeleteModal(false)}>No</button>
-                      <button className="Yes-btn" onClick={confirmDelete}>Yes</button>
+                      <button className="no-btn" onClick={() => setShowDeleteModal(false)}>No</button>
+                      <button className="yes-btn" onClick={confirmDelete}>Yes</button>
                     </div>
                   </div>
                 </div>
@@ -590,7 +589,6 @@ const EmployeeData = () => {
     </Layout>
   );
 };
-
 export default EmployeeData;
 
 

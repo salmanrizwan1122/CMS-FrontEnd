@@ -2,17 +2,14 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation"; // Import usePathname for Next.js App Router
 import Link from "next/link";
-import { FaHome, FaUser, FaCog, FaChevronDown, FaChevronRight } from "react-icons/fa";
+import {FaChevronDown, FaChevronRight } from "react-icons/fa";
 import "./layout.css"; // Import custom CSS
-
 const Sidebar = () => {
     const [openMenu, setOpenMenu] = useState(null);
     const pathname = usePathname(); // Get current route
-
     const toggleSubmenu = (menu) => {
         setOpenMenu(openMenu === menu ? null : menu);
     };
-
     return (
         <div className="sidebar sidebar-open">
             <div className="sidebar-header">
@@ -22,7 +19,7 @@ const Sidebar = () => {
                 <div>
                     <h2 className="main_menu">Main Menu</h2>
                     <ul className="menu-list">
-                    <li className={`menu-item ${pathname === "/dashboard" ? "active" : ""}`}>
+                        <li className={`menu-item ${pathname === "/dashboard" ? "active" : ""}`}>
                             <Link href="/dashboard" className="menu-link">
                                 <div className="menu_image">
                                     <img src="employee.png" alt="Employee Data" />
@@ -38,16 +35,38 @@ const Sidebar = () => {
                                 <span className="show">Employee Data</span>
                             </Link>
                         </li>
-                        <li className={`menu-item ${pathname.startsWith("/attendance") ? "active" : ""}`} onClick={() => toggleSubmenu("users")}>
-                            <div className="menu-toggle">
+                        <li className={"menu-item "} >
+                            <div className="menu-toggle" onClick={() => toggleSubmenu("attendance")}>
                                 <span className="menu-text">
                                     <div className="menu_image">
                                         <img src="attendence.png" alt="Attendance" />
                                     </div>
-                                    <span className="show">Attendance/Leave</span>
+                                    <span className="show">Attendance/Leave
+                                        {openMenu === "attendance" ? <FaChevronDown /> : <FaChevronRight />}
+                                    </span>
                                 </span>
                             </div>
+
                         </li>
+                        {openMenu === "attendance" && (
+                            <ul className="submenu">
+                                <li className={`menu-item ${pathname === "/attendance" ? "active" : ""}`}>
+                                    <Link href="/attendance" className="menu-link">
+                                        <span className="show">
+                                            Attendance
+                                        </span>
+                                    </Link>
+                                </li>
+                                <li className={`menu-item ${pathname === "/leave" ? "active" : ""}`}>
+                                    <Link href="/leave" className="menu-link">
+                                        <span className="show">
+
+                                            Leave
+                                        </span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        )}
                         <li className={`menu-item ${pathname === "/projects" ? "active" : ""}`}>
                             <Link href="/projects" className="menu-link">
                                 <div className="menu_image">
@@ -90,42 +109,34 @@ const Sidebar = () => {
         </div>
     );
 };
-
-
 const TopBar = () => {
     return (
         <div className="topbar">
-            {/* Small Icon Button */}
             <div className="topmenu_image">
                 <img src="mail.png" alt="Employee Data" />
             </div>
-
             <div className="topmenu_image">
                 <img src="bellicon.png" alt="Employee Data" />
             </div>
-
             <div className="topmenu_image">
                 <img src="setting.png" alt="Employee Data" />
             </div>
             <div className="userinfo">
                 <div>
-                <p  className="user-name">
-                    Jawad Ahmad
-                </p>
-                <p className="user-role">
-                    CEO
-                </p>
+                    <p className="user-name">
+                        Jawad Ahmad
+                    </p>
+                    <p className="user-role">
+                        CEO
+                    </p>
                 </div>
-              <div className="user-img">
-                <img src="man.png"/>
-              </div>
-                
+                <div className="user-img">
+                    <img src="man.png" />
+                </div>
             </div>
         </div>
     );
-
 };
-
 const Layout = ({ children }) => {
     return (
         <div className="dashboard-container">
