@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress
+import { API_BASE_URL } from "./network/url";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function Login() {
     setLoading(true); // Show loader
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/auth/api/login/", {
+      const response = await fetch(`${API_BASE_URL}auth/api/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,6 +37,12 @@ export default function Login() {
       sessionStorage.setItem("designation", data.user.designation.name);
       sessionStorage.setItem("department", data.user.department.name);
       sessionStorage.setItem("permissions", JSON.stringify(data.user.permissions));
+      sessionStorage.setItem("username", JSON.stringify(data.user.username));
+      sessionStorage.setItem("fullname", JSON.stringify(data.user.fullname));
+      sessionStorage.setItem("role", JSON.stringify(data.user.roles[0].name));
+
+
+
 
       // Redirect to Employee Data Page
       router.push("/dashboard");

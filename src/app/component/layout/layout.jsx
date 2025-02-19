@@ -1,15 +1,17 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation"; // Import usePathname for Next.js App Router
 import Link from "next/link";
 import {FaChevronDown, FaChevronRight } from "react-icons/fa";
 import "./layout.css"; // Import custom CSS
 const Sidebar = () => {
+    
     const [openMenu, setOpenMenu] = useState(null);
     const pathname = usePathname(); // Get current route
     const toggleSubmenu = (menu) => {
         setOpenMenu(openMenu === menu ? null : menu);
     };
+ 
     return (
         <div className="sidebar sidebar-open">
             <div className="sidebar-header">
@@ -110,6 +112,12 @@ const Sidebar = () => {
     );
 };
 const TopBar = () => {
+    const [fullname, setFullname] = useState("");
+    const [role, setRole] = useState("");
+    useEffect(() => {
+        setFullname(JSON.parse(sessionStorage.getItem("fullname")) || "Guest User");
+        setRole(JSON.parse(sessionStorage.getItem("role"))|| "Employee");
+    }, []);
     return (
         <div className="topbar">
             <div className="topmenu_image">
@@ -124,10 +132,10 @@ const TopBar = () => {
             <div className="userinfo">
                 <div>
                     <p className="user-name">
-                        Jawad Ahmad
+                        {fullname}
                     </p>
                     <p className="user-role">
-                        CEO
+                        {role}
                     </p>
                 </div>
                 <div className="user-img">

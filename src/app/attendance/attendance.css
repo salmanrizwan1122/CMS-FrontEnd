@@ -17,10 +17,10 @@
 
 .stat-card {
     background: #F4F4F4;
-    padding: 12px;
+    padding: 10px;
     border-radius: 20px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
-    width: 18%;
+    width: 30%;
     text-align: center;
     position: relative;
     min-width: 150px; /* Prevents cards from becoming too small */
@@ -87,14 +87,21 @@
         width: 30%; 
     }
 }
+@media (max-width: 900) {
+  .stat-card {
+      width: 40%; 
+  }
+}
 @media (max-width: 768px) {
     .attendance-container {
+      
         justify-content: center; 
         gap: 15px;
     }
 
     .stat-card {
         width: 45%; 
+        width: 100%; 
     }
 }
 @media (max-width: 480px) {
@@ -108,11 +115,15 @@
 
 border-radius: 22px 22px 0 0;
     background-color: #F1F1F1;
-}
 
+}
+.table-data{
+  margin-top: 2%;
+}
 .search-bar-container {
     display: flex;
-    margin-top: 30px;
+    margin-top: 4%;
+    margin-bottom: 1%;
     justify-content: space-between;
     padding: 15px 30px ;
     border-bottom: 1px solid #AEAEAE;
@@ -134,42 +145,62 @@ letter-spacing: -3%;
     }
   }
   
-  
-  .search-field {
+
+  .calender-field {
     display: flex;
     /* Corrected */
     align-items: center;
     /* Align items properly */
-    background-color: #F4F4F4;
-    border-radius: 20px;
+    background-color: white;
+    border-radius: 12px;
     border: 1px solid black;
-    padding: 10px 20px;
+    padding: 10px 10px;
     gap: 10px;
-    /* Space between icon and input */
-    width: 33%;
+    width: 30%;
   }
-  
-  @media (max-width: 730px) {
-    .search-field {
-      width: 100%;
-  
-    }
+  .calender-field input {
+    width: 100%
   }
+
   
-  .search-field input {
-    width: 80%
-  }
-  
-  .search-field img {
-    width: 20px;
-  }
-  
-  .search-field input:focus,
+  .calender-field input:focus,
   textarea:focus {
     outline: none;
     border: none;
   }
+  .department-field {
+    display: flex;
+    /* Corrected */
+    align-items: center;
+    /* Align items properly */
+    background-color: white;
+    border-radius: 12px;
+    border: 1px solid black;
+    padding: 10px 10px;
+    gap: 10px;
+    /* Space between icon and input */
+    width: 25%;
+  }
   
+  .status-field {
+    display: flex;
+    /* Corrected */
+    align-items: center;
+    /* Align items properly */
+    background-color: white;
+    border-radius: 12px;
+    border: 1px solid black;
+    padding: 10px 10px;
+    gap: 10px;
+    width: 15%;
+  }
+
+  .status-field input {
+    width: 100%
+  }
+  .department-field input {
+    width: 100%
+  }
   .heading-container {
     width: fit-content;
   }
@@ -195,8 +226,9 @@ letter-spacing: -3%;
   
   .search-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     width: 70%;
+    gap: 10px;
   }
   
   @media (max-width: 1000px) {
