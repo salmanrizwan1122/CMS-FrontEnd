@@ -32,7 +32,7 @@ const AttendanceData = () => {
 
         const result = await response.json();
         setAttendanceRecords(result.attendance_records || []);
-        setSummary(result.summary || {});
+        setSummary(result.daily_summary || {});
       } catch (error) {
         console.error("Error fetching attendance:", error);
       } finally {

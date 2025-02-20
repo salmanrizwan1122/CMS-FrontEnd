@@ -390,7 +390,7 @@ const EmployeeData = () => {
             <div className="employee-card" key={employee.id} onClick={() => openModal(employee)}>
               <div className="employee-image">
                 <img
-                  src={employee.profile_pic ? `data:image/jpeg;base64,${employee.profile_pic}` : "/man.png"}
+                  src={employee.profile_pic ? employee.profile_pic : "/man.png"}
                   alt="Profile"
                   className="employee-img"
                 />
@@ -423,7 +423,7 @@ const EmployeeData = () => {
                   <label htmlFor="imageUpload" style={{ cursor: isEditing || isAdding ? "pointer" : "default" }}>
                     <div className="image-wrapper">
                       <img
-                        src={editedEmployee.profile_pic ? `data:image/jpeg;base64,${editedEmployee.profile_pic}` : "/man.png"}
+                        src={editedEmployee.profile_pic ? editedEmployee.profile_pic : "/man.png"}
                         alt="Base64 Image"
                         className="modal-image"
                       />

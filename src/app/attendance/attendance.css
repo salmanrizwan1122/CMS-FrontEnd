@@ -120,7 +120,7 @@ border-radius: 22px 22px 0 0;
 .table-data{
   margin-top: 2%;
 }
-.search-bar-container {
+.dropdown-container {
     display: flex;
     margin-top: 4%;
     margin-bottom: 1%;
@@ -140,7 +140,7 @@ letter-spacing: -3%;
 }
   
   @media (max-width: 1000px) {
-    .search-bar-container {
+    .dropdown-container {
       flex-direction: column;
     }
   }
@@ -224,7 +224,7 @@ letter-spacing: -3%;
     width: 20px;
   }
   
-  .search-container {
+  .dropdowns-container {
     display: flex;
     justify-content: end;
     width: 70%;
@@ -232,14 +232,14 @@ letter-spacing: -3%;
   }
   
   @media (max-width: 1000px) {
-    .search-container {
+    .dropdowns-container {
       width: 100%;
       margin-top: 2%;
     }
   }
   
   @media (max-width: 730px) {
-    .search-container {
+    .dropdowns-container {
       flex-direction: column;
       gap: 5px;
     }
