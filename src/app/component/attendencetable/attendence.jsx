@@ -157,7 +157,7 @@ const AttendenceTable = ({ data }) => {
             <input
               type="date"
               name="date"
-              className="search-bar"
+              className="dropdown"
               value={filters.date}
               onChange={handleFilterChange}
             />
@@ -165,7 +165,7 @@ const AttendenceTable = ({ data }) => {
           <div className="department-field">
             <select
               name="department"
-              className="search-bar"
+              className="dropdown"
               value={filters.department}
               onChange={handleFilterChange}
             >
@@ -176,7 +176,7 @@ const AttendenceTable = ({ data }) => {
           <div className="status-field">
             <select
               name="status"
-              className="search-bar"
+              className="dropdown"
               value={filters.status}
               onChange={handleFilterChange}
             >

@@ -8,22 +8,21 @@
     margin-bottom: 2%;
 }
 
-.attendance-container {
+.leave-container {
     display: flex;
     flex-wrap: wrap; 
     gap: 10px;
     justify-content: space-between;
 }
 
-.stat-card {
+.leave-stat-card {
     background: #F4F4F4;
     padding: 10px;
     border-radius: 20px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
-    width: 30%;
     text-align: center;
     position: relative;
-    min-width: 150px; /* Prevents cards from becoming too small */
+    gap: 40px;
 }
 
 .card-title {
@@ -35,10 +34,11 @@
     color: #7D7D7D;
 }
 
-.card-content {
+.leave-card-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 40px;
 }
 
 .card-stats {
@@ -78,34 +78,34 @@
     letter-spacing: -3%;
 }
 @media (max-width: 1360px) {
-    .stat-card {
+    .leave-stat-card {
         width: 30%; 
     }
 }
 @media (max-width: 1024px) {
-    .stat-card {
+    .leave-stat-card {
         width: 30%; 
     }
 }
 @media (max-width: 900) {
-  .stat-card {
+  .leave-stat-card {
       width: 40%; 
   }
 }
 @media (max-width: 768px) {
-    .attendance-container {
+    .leave-container {
       
         justify-content: center; 
         gap: 15px;
     }
 
-    .stat-card {
+    .leave-stat-card {
         width: 45%; 
         width: 100%; 
     }
 }
 @media (max-width: 480px) {
-    .stat-card {
+    .leave-stat-card {
         width: 100%; 
     }
 }
@@ -192,6 +192,7 @@ letter-spacing: -3%;
   .status-field input {
     width: 100%
   }
+  
   .department-field input {
     width: 100%
   }
@@ -244,4 +245,3 @@ letter-spacing: -3%;
     width:100%;
     cursor: pointer;
   }
-  

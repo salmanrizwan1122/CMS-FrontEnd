@@ -1,0 +1,256 @@
+
+.attandance-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .attandance-modal-content {
+    background: #E4E4E4;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+  }
+
+  .attandance-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .input-group input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .close-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .close-btn:hover {
+    background: red;
+  }
+
+
+
+  
+.attandance-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.attandance-modal-content {
+  background: #E4E4E4;
+  padding: 30px;
+  border-radius: 10px;
+  width: 50%;
+  max-height: 600px;
+  overflow: auto;
+  position: relative;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.attandance-modal-icons {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  display: flex;
+  gap: 15px;
+}
+
+.icon {
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+}
+
+.attandance-modal-icons img {
+  width: 20px
+}
+
+.attandance-modal-header {
+  display: flex;
+  align-items: start;
+  gap: 20px;
+  padding: 15px 0px;
+}
+
+.attandance-modal-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+
+
+.attandance-modal-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  width: 100%;
+}
+
+.attandance-modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 28.13px;
+  letter-spacing: -3%;
+  color: #464646;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 16px;
+  background: #f4f4f4;
+  font-size: 14px;
+  width: 100%;
+  resize: none;
+}
+
+.form-group select {
+
+  background: #f4f4f4;
+  background-size: 16px;
+  padding: 10px;
+  border-radius: 16px;
+  border: 1px solid black;
+
+
+}
+
+.form-group select:focus {
+  outline: none;
+  /* Optional: remove the focus outline for a cleaner look */
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+.approve-btn {
+  padding: 8px 25px;
+  margin: 5px;
+  cursor: pointer;
+  background: #419141;
+  border-radius: 8px;
+  color: white;
+  font-family: Roboto;
+  font-weight: 400;
+  text-align: center;
+}
+
+.reject-btn {
+  padding: 8px 25px;
+  margin: 5px;
+  cursor: pointer;
+  background: #823534;
+  border-radius: 8px;
+  color: white;
+  font-family: Roboto;
+  font-weight: 400;
+  text-align: center;
+
+}
+
+.attandance-modal-footer {
+  display: flex;
+  justify-content: end;
+  margin-top: 3%;
+}
+
+
+.image-upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  /* Space between elements */
+}
+
+
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.attandance-modal-image {
+  width: 160px;
+  /* Increased from 120px */
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+/* Camera Icon (Adjust Position and Size) */
+.camera-icon {
+  position: absolute;
+  bottom: 10px;
+  /* Adjusted for larger image */
+  right: 10px;
+  background: #000000;
+  width: 40px;
+  /* Increased size */
+  height: 40px;
+  /* Increased size */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.camera-icon:hover {
+  background: #0056b3;
+}
