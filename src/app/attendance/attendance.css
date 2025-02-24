@@ -17,7 +17,7 @@
 
 .stat-card {
     background: #F4F4F4;
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 20px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
     width: 30%;
@@ -58,15 +58,12 @@
     border-radius: 20px;
     padding: 10px 20px;
 }
-
 .late {
     color: orange;
 }
-
 .present {
     color: green;
 }
-
 .absent {
     color: red;
 }
@@ -98,7 +95,6 @@
         justify-content: center; 
         gap: 15px;
     }
-
     .stat-card {
         width: 45%; 
         width: 100%; 
@@ -113,7 +109,6 @@
 
 border-radius: 22px 22px 0 0;
     background-color: #F1F1F1;
-
 }
 .table-data{
   margin-top: 2%;
@@ -127,7 +122,6 @@ border-radius: 22px 22px 0 0;
     border-bottom: 1px solid #AEAEAE;
     align-items: center;
   }
-  
 .table-heading{
     font-family: Roboto;
 font-weight: 500;
@@ -136,7 +130,6 @@ line-height: 23.44px;
 letter-spacing: -3%;
 
 }
-  
   @media (max-width: 1000px) {
     .dropdown-container {
       flex-direction: column;
@@ -188,7 +181,6 @@ letter-spacing: -3%;
     width: 15%;
     cursor: pointer;
   }
-
   .status-field input {
     width: 100%
   }
@@ -198,7 +190,6 @@ letter-spacing: -3%;
   .heading-container {
     width: fit-content;
   }
-  
   .add-btn {
     display: flex;
     align-items: center;
@@ -213,7 +204,6 @@ letter-spacing: -3%;
   .add-btn button {
     cursor: pointer;
   }
-  
   .add-btn img {
     width: 20px;
   }
