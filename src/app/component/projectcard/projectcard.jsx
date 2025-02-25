@@ -1,55 +1,102 @@
-import React from 'react';
-import './projectcard.css';
 
-const ProjectCard = ({ title, description, leaderName, deadline, designation, date, tasks, leaderImg, projectImg, members  }) => {
-    
+"use client";
+
+import React, { useState, useRef, useEffect } from "react";
+import "./projectcard.css";
+
+const ProjectCard = ({
+    title,
+    description,
+    leaderName,
+    deadline,
+    designation,
+    date,
+    tasks,
+    leaderImg,
+    members,
+}) => {
     const visibleMembers = members.slice(0, 4); // Show only first 4 members
-  const remainingCount = members.length - visibleMembers.length; // Count remaining members
+    const remainingCount = members.length - visibleMembers.length; // Count remaining members
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef(null);
+
+    // Toggle dropdown menu
+    const toggleMenu = () => {
+        setMenuOpen((prev) => !prev);
+    };
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setMenuOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+
     return (
-        <>
-      
-      
         <div className="project-card">
-            <div className='project-top-content'>
-                <div className='project-img-container'>
-                    <img className='project-img' src={projectImg} alt="Project" />
-                    <h1 className='title'>{title}</h1>
+            <div className="project-top-content">
+                <div className="project-img-container">
+                    <img className="project-img" src='/man.png' alt="Project" />
+                    <h1 className="title">{title}</h1>
                 </div>
-                <div>
-                    <svg width="6" height="22" viewBox="0 0 6 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clipPath="url(#clip0_247_254)">
-                            <path d="M2.99541 5.07589C1.34735 5.07377 -0.00250243 3.92845 3.48343e-06 2.53371C0.0025094 1.13897 1.3557 -0.00211672 3.00543 2.94833e-06C4.656 0.00212261 6.00251 1.14533 6.00084 2.54148C5.99833 3.93693 4.64597 5.07731 2.99541 5.07589Z" fill="black" />
-                            <path d="M2.99541 13.5381C1.34652 13.5367 -0.00250243 12.3913 3.48558e-06 10.9959C0.0025094 9.60115 1.3557 8.46077 3.00543 8.46289C4.65516 8.46501 6.00251 9.60822 6 11.0051C5.99833 12.3998 4.64597 13.5402 2.99541 13.5381Z" fill="black" />
-                            <path d="M3.00543 16.9238C4.656 16.926 6.00251 18.0692 6.00084 19.4653C5.99833 20.8608 4.64681 22.0011 2.99624 21.9997C1.34735 21.9976 -0.00250243 20.853 3.48343e-06 19.4575C0.0025094 18.0628 1.3557 16.9217 3.00543 16.9238Z" fill="black" />
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_247_254">
-                                <rect width="6" height="22" fill="white" />
-                            </clipPath>
-                        </defs>
-                    </svg>
+                <div className="option-icon-container" ref={menuRef}>
+                    <div className="option-icon" onClick={toggleMenu}>
+                        <svg width="6" height="22" viewBox="0 0 6 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clipPath="url(#clip0_249_1241)">
+                                <path d="M2.99541 5.07589C1.34735 5.07377 -0.00250243 3.92845 3.48343e-06 2.53371C0.0025094 1.13897 1.3557 -0.00211672 3.00543 2.94833e-06C4.656 0.00212261 6.00251 1.14533 6.00084 2.54148C5.99833 3.93693 4.64597 5.07731 2.99541 5.07589Z" fill="black" />
+                                <path d="M2.99541 13.5381C1.34652 13.5367 -0.00250243 12.3913 3.48558e-06 10.9959C0.0025094 9.60115 1.3557 8.46077 3.00543 8.46289C4.65516 8.46501 6.00251 9.60822 6 11.0051C5.99833 12.3998 4.64597 13.5402 2.99541 13.5381Z" fill="black" />
+                                <path d="M3.00543 16.9238C4.656 16.926 6.00251 18.0692 6.00084 19.4653C5.99833 20.8608 4.64681 22.0011 2.99624 21.9997C1.34735 21.9976 -0.00250243 20.853 3.48343e-06 19.4575C0.0025094 18.0628 1.3557 16.9217 3.00543 16.9238Z" fill="black" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_249_1241">
+                                    <rect width="6" height="22" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    {/* Dropdown Menu */}
+                    {menuOpen && (
+                        <div className="dropdown-menu">
+                            <div className="menu-option">
+                                <img className="menu-img" src="/edit.png" alt="edit" />
+                                <p className="dropdown-item">Edit</p>
+                            </div>
+                            <div className="menu-option">
+                                <img className="menu-img" src="/delete.png" alt="delete" />
+                                <p className="dropdown-item">Delete</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
-            <p className='description'>{description}</p>
-            <div className='project-info-container'>
-                <img className='leader-img' src={leaderImg} alt="Leader" />
-                <div className='project-info'>
-                    <div className='heading-container'>
-                        <p className='leader-name'>{leaderName}</p>
+            <p className="description">{description}</p>
+            <div className="project-info-container">
+                <img className="leader-img" src={leaderImg ? leaderImg : "/man.png"} alt="Leader" />
+                <div className="project-info">
+                    <div className="project-heading-container">
+                        <p className="leader-name">{leaderName}</p>
                         <p className="deadline">Deadline</p>
                     </div>
-                    <div className='heading-container'>
-                        <p className='designation'>{designation}</p>
+                    <div className="project-heading-container">
+                        <p className="designation">{designation}</p>
                         <p className="date">{deadline}</p>
                     </div>
                 </div>
             </div>
-            <div className='project-bottom-content'>
-            <div className='task-info'>
-                <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className="project-bottom-content">
+                <div className="task-info">
                     <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="15.5" cy="15.5" r="15.5" fill="#B5E686" />
-                        <g clipPath="url(#clip0_248_292)">
+                        <g clipPath="url(#clip0_249_1331)">
                             <path d="M20.0806 24C16.8423 24 13.6035 24 10.3652 24C10.3266 23.9888 10.2885 23.9747 10.2495 23.9665C9.50825 23.8104 9.00381 23.246 9.00333 22.5455C9.00044 18.9216 8.99996 15.2976 9.00333 11.6736C9.00381 10.9075 9.58492 10.2152 10.3372 10.1297C10.8214 10.0747 11.3148 10.1029 11.8038 10.0947C11.8693 10.0937 11.9349 10.0947 12.0155 10.0947C12.0155 9.91724 12.0155 9.75731 12.0155 9.59689C12.0155 9.25661 12.1153 9.15161 12.4572 9.14675C12.7663 9.14237 13.0759 9.14091 13.385 9.1482C13.4892 9.15063 13.5379 9.11612 13.5804 9.02084C13.7742 8.58042 14.1031 8.27952 14.5468 8.1084C14.6654 8.06271 14.7913 8.03549 14.9143 8C15.0898 8 15.2649 8 15.4404 8C15.4848 8.01118 15.5291 8.02431 15.574 8.03306C16.1551 8.14535 16.5862 8.45792 16.8264 9.01063C16.8751 9.12244 16.9334 9.15015 17.0448 9.14869C17.3848 9.14334 17.7253 9.1414 18.0653 9.15452C18.3267 9.16473 18.4308 9.29015 18.4318 9.55265C18.4323 9.72814 18.4318 9.90363 18.4318 10.0952C18.5036 10.0952 18.5591 10.0952 18.6146 10.0952C19.0322 10.0952 19.4498 10.0888 19.867 10.0971C20.7567 10.1151 21.4444 10.8248 21.4449 11.7227C21.4458 15.3097 21.4444 18.8968 21.4458 22.4838C21.4463 23.1352 21.1305 23.5756 20.5624 23.844C20.41 23.9149 20.2412 23.949 20.0806 24ZM12.015 10.8574C11.5477 10.8574 11.105 10.8554 10.6628 10.8579C10.0966 10.8613 9.75178 11.2152 9.75178 11.7888C9.75178 13.5072 9.75178 15.2251 9.75178 16.9435C9.75178 18.7869 9.75323 20.6302 9.75034 22.4731C9.74985 22.7614 9.8545 22.9933 10.1135 23.108C10.2871 23.1848 10.4882 23.2339 10.6772 23.2344C13.7086 23.2421 16.7401 23.2397 19.7715 23.2397C19.8076 23.2397 19.8438 23.2407 19.8795 23.2387C20.4211 23.211 20.6945 22.9218 20.6945 22.3773C20.6945 19.5603 20.6945 16.7433 20.6945 13.9267C20.6945 13.1927 20.6959 12.4582 20.694 11.7241C20.6926 11.2764 20.3815 10.8972 19.9504 10.8739C19.4575 10.8472 18.9618 10.8661 18.4675 10.8666C18.4598 10.8666 18.4516 10.8778 18.4438 10.8841C18.4405 10.8938 18.4347 10.9036 18.4347 10.9133C18.4332 11.1734 18.4323 11.4339 18.4318 11.694C18.4308 12.0362 18.2808 12.1893 17.9413 12.1898C16.1266 12.1903 14.3119 12.1903 12.4972 12.1898C12.1606 12.1898 12.0169 12.045 12.0159 11.7071C12.014 11.432 12.015 11.1563 12.015 10.8574ZM12.7793 11.4208C14.418 11.4208 16.0389 11.4208 17.6621 11.4208C17.6621 10.9128 17.6621 10.4155 17.6621 9.90606C17.3443 9.90606 17.0357 9.90606 16.7275 9.90606C16.4073 9.90606 16.2964 9.82099 16.2096 9.50939C16.0702 9.00918 15.6174 8.67716 15.1245 8.71362C14.6765 8.74716 14.3023 9.07383 14.1716 9.54585C14.0993 9.8064 13.971 9.90509 13.7033 9.90606C13.6054 9.90654 13.5075 9.90606 13.4096 9.90606C13.2003 9.90606 12.9911 9.90606 12.7798 9.90606C12.7793 10.4223 12.7793 10.9157 12.7793 11.4208Z" fill="#2D5C00" />
                             <path d="M17.0147 14.2857C17.7202 14.2857 18.4262 14.2847 19.1318 14.2862C19.3473 14.2867 19.4983 14.3917 19.546 14.5676C19.6034 14.7796 19.4693 14.9974 19.2533 15.0367C19.1882 15.0484 19.1202 15.0489 19.0531 15.0489C17.6932 15.0494 16.3333 15.0494 14.9738 15.0494C14.9222 15.0494 14.8706 15.0499 14.8195 15.0445C14.6068 15.0207 14.4694 14.8671 14.4732 14.6595C14.4771 14.4563 14.6246 14.2998 14.8364 14.2886C15.0008 14.2803 15.1657 14.2862 15.3307 14.2862C15.892 14.2852 16.4533 14.2852 17.0147 14.2857Z" fill="#2D5C00" />
                             <path d="M17.0149 20.3793C17.7204 20.3793 18.4264 20.3784 19.132 20.3798C19.3673 20.3803 19.5284 20.5096 19.5539 20.7084C19.58 20.9136 19.4551 21.092 19.253 21.1314C19.198 21.1421 19.1406 21.1455 19.0842 21.1455C17.7035 21.1464 16.3233 21.1464 14.9427 21.1455C14.6567 21.1455 14.4932 21.022 14.4749 20.7998C14.4541 20.5509 14.622 20.3803 14.8978 20.3793C15.5676 20.3769 16.237 20.3784 16.9069 20.3784C16.943 20.3793 16.9792 20.3793 17.0149 20.3793Z" fill="#2D5C00" />
@@ -59,33 +106,30 @@ const ProjectCard = ({ title, description, leaderName, deadline, designation, da
                             <path d="M12.0646 20.6761C12.434 20.3212 12.8203 19.9484 13.208 19.5775C13.3759 19.4171 13.5596 19.4001 13.7236 19.5235C13.9333 19.682 13.942 19.9285 13.7385 20.1253C13.3556 20.4958 12.9703 20.8633 12.5855 21.2317C12.4919 21.3212 12.3998 21.4121 12.3038 21.4986C12.1196 21.6644 11.9286 21.6624 11.7579 21.4889C11.5042 21.2308 11.2511 20.9717 11.0032 20.7072C10.8701 20.5648 10.8542 20.3888 10.9419 20.2333C11.0181 20.0981 11.1647 20.0233 11.3239 20.067C11.4083 20.0903 11.4888 20.1482 11.5563 20.2075C11.7246 20.3528 11.8843 20.5079 12.0646 20.6761Z" fill="#2D5C00" />
                         </g>
                         <defs>
-                            <clipPath id="clip0_248_292">
+                            <clipPath id="clip0_249_1331">
                                 <rect width="12.4444" height="16" fill="white" transform="translate(9 8)" />
                             </clipPath>
                         </defs>
                     </svg>
-                </svg>
-                <div className="tasks">Tasks: <span>{tasks}</span></div>
+
+                    <div className="tasks">Tasks: <span>{tasks}</span></div>
                 </div>
                 <div className="members-info">
-        {visibleMembers.map((img, index) => (
-          <img
-            key={index}
-            className="member-img"
-            src={img}
-            alt="Member"
-            style={{ marginLeft: index === 0 ? 0 : "-10px", zIndex: visibleMembers.length - index }}
-          />
-        ))}
-        {remainingCount > 0 && (
-          <div className="more-members">+{remainingCount}</div>
-        )}
-      </div>
-
+                    {visibleMembers.map((img, index) => (
+                        <img
+                            key={index}
+                            className="member-img"
+                            src={img}
+                            alt="Member"
+                            style={{ marginLeft: index === 0 ? 0 : "-10px", zIndex: visibleMembers.length - index }}
+                        />
+                    ))}
+                    {remainingCount > 0 && (
+                        <div className="more-members">+{remainingCount}</div>
+                    )}
+                </div>
             </div>
-           
         </div>
-        </>
     );
 };
 

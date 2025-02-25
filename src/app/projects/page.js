@@ -1,90 +1,44 @@
-import React from "react";
+"use client";
+
+
+import React, { useEffect, useState } from "react";
 import Layout from "../component/layout/layout";
 import ProjectCard from "../component/projectcard/projectcard";
 import "./project.css";
 
 const Project = () => {
-  const projects = [
-    {
-      title: "Clinic Management",
-      description:
-        "A clinic management project streamlines patient records, appointments, and billing processes to improve operational efficiency.",
-      leaderName: "Sophie Headrick",
-      deadline: "Deadline",
-      designation: "Project Leader",
-      date: "20 July 2021",
-      tasks: "06/10",
-      leaderImg: "/man.png",
-      projectImg: "/man.png",
-      members: ["/man.png", "/man.png", "/man.png","/man.png","/man.png" ], // Add member images
-    },
-    {
-      title: "Clinic Management",
-      description:
-        "A clinic management project streamlines patient records, appointments, and billing processes to improve operational efficiency.",
-      leaderName: "Sophie Headrick",
-      deadline: "Deadline",
-      designation: "Project Leader",
-      date: "20 July 2021",
-      tasks: "06/10",
-      leaderImg: "/man.png",
-      projectImg: "/man.png",
-      members: ["/man.png", "/man.png", "/man.png","/man.png","/man.png" ], // Add member images
-    },
-    {
-      title: "Clinic Management",
-      description:
-        "A clinic management project streamlines patient records, appointments, and billing processes to improve operational efficiency.",
-      leaderName: "Sophie Headrick",
-      deadline: "Deadline",
-      designation: "Project Leader",
-      date: "20 July 2021",
-      tasks: "06/10",
-      leaderImg: "/man.png",
-      projectImg: "/man.png",
-      members: ["/man.png", "/man.png", "/man.png","/man.png","/man.png" ], // Add member images
-    },
-    {
-      title: "Clinic Management",
-      description:
-        "A clinic management project streamlines patient records, appointments, and billing processes to improve operational efficiency.",
-      leaderName: "Sophie Headrick",
-      deadline: "Deadline",
-      designation: "Project Leader",
-      date: "20 July 2021",
-      tasks: "06/10",
-      leaderImg: "/man.png",
-      projectImg: "/man.png",
-      members: ["/man.png", "/man.png", "/man.png","/man.png","/man.png" ], // Add member images
-    },
-    {
-      title: "Clinic Management",
-      description:
-        "A clinic management project streamlines patient records, appointments, and billing processes to improve operational efficiency.",
-      leaderName: "Sophie Headrick",
-      deadline: "Deadline",
-      designation: "Project Leader",
-      date: "20 July 2021",
-      tasks: "06/10",
-      leaderImg: "/man.png",
-      projectImg: "/man.png",
-      members: ["/man.png", "/man.png", "/man.png","/man.png","/man.png" ], // Add member images
-    },
-    {
-      title: "Clinic Management",
-      description:
-        "A clinic management project streamlines patient records, appointments, and billing processes to improve operational efficiency.",
-      leaderName: "Sophie Headrick",
-      deadline: "Deadline",
-      designation: "Project Leader",
-      date: "20 July 2021",
-      tasks: "06/10",
-      leaderImg: "/man.png",
-      projectImg: "/man.png",
-      members: ["/man.png", "/man.png", "/man.png","/man.png","/man.png" ], // Add member images
-    },
-    
-  ];
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch("http://127.0.0.1:8000/project/api/get-all/", {
+          method: "GET",
+          headers: {
+            Authorization: "Token 94f49923a1a0ec68639fcbb6083b58cae21a1e9d",
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        setProjects(data.projects); // Update state with fetched projects
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   return (
     <Layout>
@@ -97,9 +51,8 @@ const Project = () => {
           <div className="project-status-field">
             <select name="status" className="dropdown">
               <option value="">Status</option>
-              <option value="Rejected">Rejected</option>
-              <option value="Approved">Approved</option>
-              <option value="Pending">Pending</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
             </select>
           </div>
           <div className="add-new-container">
@@ -110,10 +63,34 @@ const Project = () => {
           </div>
         </div>
       </div>
+
+      {/* Show loading indicator */}
+      {loading && <p>Loading projects...</p>}
+
+      {/* Show error message if fetch fails */}
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+
+      {/* Render projects if successfully fetched */}
       <div className="projects-container">
-        {projects.map((project, index) => (
-          <ProjectCard key={index} {...project} />
-        ))}
+        {projects.length > 0 ? (
+          projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              title={project.name}
+              description={project.description}
+              leaderName={project.leader ? project.leader.name : "No Leader"}
+              deadline={project.deadline}
+              designation={project.leader ? "Leader" : "No Designation"}
+              date={project.created_at}
+              tasks={project.total_tasks}
+              leaderImg={project.leader ? project.leader.profile_pic : ""}
+              projectImg="" // Add project image URL if available in the API
+              members={project.team_members.map((member) => member.profile_pic)}
+            />
+          ))
+        ) : (
+          !loading && <p>No projects found.</p>
+        )}
       </div>
     </Layout>
   );

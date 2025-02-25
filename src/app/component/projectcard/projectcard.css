@@ -46,6 +46,11 @@
   font-size: 16px;
   line-height: 18.75px;
   letter-spacing: -3%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .project-img-container {
@@ -69,11 +74,45 @@
   align-items: center;
 }
 
-.heading-container {
+.project-heading-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+}
+.option-icon-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  background: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 8px  ;
+  z-index: 10;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+.menu-option:hover {
+  background-color: #f2f2f2;
+}
+.menu-option{
+  display: flex;
+align-items: center;
+padding: 0px 20px;
+}
+.menu-img{
+  width: 15px;
+  height: 15px;
 }
 
 .leader-name {
@@ -119,6 +158,7 @@
 .leader-img {
   width: 30px;
   height: 30px;
+  border-radius: 50%;
 }
 
 .project-bottom-content {
@@ -142,7 +182,6 @@
 .members-info {
   display: flex;
   align-items: center;
-  margin-top: 10px;
 }
 
 .member-img {

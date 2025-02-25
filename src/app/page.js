@@ -15,7 +15,6 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true); // Show loader
-
     try {
       const response = await fetch(`${API_BASE_URL}auth/api/login/`, {
         method: "POST",
@@ -24,13 +23,10 @@ export default function Login() {
         },
         body: JSON.stringify({ email, password }),
       });
-
       if (!response.ok) {
         throw new Error("Login failed!");
       }
-
       const data = await response.json();
-
       // Store data in sessionStorage
       sessionStorage.setItem("token", data.token);
       sessionStorage.setItem("email", data.user.email);
@@ -40,10 +36,6 @@ export default function Login() {
       sessionStorage.setItem("username", JSON.stringify(data.user.username));
       sessionStorage.setItem("fullname", JSON.stringify(data.user.fullname));
       sessionStorage.setItem("role", JSON.stringify(data.user.roles[0].name));
-
-
-
-
       // Redirect to Employee Data Page
       router.push("/dashboard");
     } catch (error) {
@@ -53,7 +45,6 @@ export default function Login() {
       setLoading(false); // Hide loader
     }
   };
-
   return (
     <div className="main_container">
       <div className="login_container">
@@ -61,7 +52,6 @@ export default function Login() {
           <img src="/logo.png" alt="Logo" className="w-24 h-auto" />
         </div>
         <h2 className="main_heading">Log in</h2>
-
         <form className="main_form" onSubmit={handleLogin}>
           <div className="email">
             <label className="heading">Email</label>
