@@ -87,14 +87,37 @@ const formatTime = (timeString) => {
 
 const AttendenceTable = ({ data }) => {
   const [filters, setFilters] = useState({
-    date: "",
+    dateRange: "",
+    startDate: "",
+    endDate: "",
     department: "",
     status: "",
   });
 
   const handleFilterChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    const today = new Date();
+    let startDate = "";
+    let endDate = today.toISOString().split("T")[0]; // Default to today's date
+  
+    if (value === "last7days") {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(today.getDate() - 7);
+      startDate = sevenDaysAgo.toISOString().split("T")[0];
+    } else if (value === "lastMonth") {
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setMonth(today.getMonth() - 1);
+      startDate = oneMonthAgo.toISOString().split("T")[0];
+    }
+  
+    setFilters({
+      ...filters,
+      [name]: value,
+      startDate: startDate || filters.startDate,
+      endDate: endDate || filters.endDate,
+    });
   };
+  
 
   // Flatten attendance data from API response
   const formattedData = data.flatMap((record) => {
@@ -139,8 +162,25 @@ const AttendenceTable = ({ data }) => {
 
   // Apply filters
   const filteredData = formattedData.filter((row) => {
+    const rowDate = new Date(row.date);
+    const startDate = filters.startDate ? new Date(filters.startDate) : null;
+    const endDate = filters.endDate ? new Date(filters.endDate) : null;
+
+    let dateInRange = true;
+    if (filters.dateRange === "last7days") {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      dateInRange = rowDate >= sevenDaysAgo;
+    } else if (filters.dateRange === "lastMonth") {
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+      dateInRange = rowDate >= oneMonthAgo;
+    } else if (filters.dateRange === "customRange" && startDate && endDate) {
+      dateInRange = rowDate >= startDate && rowDate <= endDate;
+    }
+
     return (
-      (filters.date ? row.date === filters.date : true) &&
+      dateInRange &&
       (filters.department ? row.department === filters.department : true) &&
       (filters.status ? row.status === filters.status : true)
     );
@@ -154,14 +194,38 @@ const AttendenceTable = ({ data }) => {
         </div>
         <div className="dropdowns-container">
           <div className="calender-field">
-            <input
-              type="date"
-              name="date"
+            <select
+              name="dateRange"
               className="dropdown"
-              value={filters.date}
+              value={filters.dateRange}
               onChange={handleFilterChange}
-            />
+            >
+              <option value="">Select Date Range</option>
+              <option value="last7days">Last 7 Days</option>
+              <option value="lastMonth">Last Month</option>
+              <option value="customRange">Custom Range</option>
+            </select>
           </div>
+      
+            <>
+              <div className="calender-field">
+                <input
+                  type="date"
+                  name="startDate"
+                  className="dropdown"
+                  value={filters.startDate}
+                  onChange={handleFilterChange}
+                />
+                <input
+                  type="date"
+                  name="endDate"
+                  className="dropdown"
+                  value={filters.endDate}
+                  onChange={handleFilterChange}
+                />
+              </div>
+            </>
+          
           <div className="department-field">
             <select
               name="department"

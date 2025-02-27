@@ -143,9 +143,8 @@ letter-spacing: -3%;
     background-color: white;
     border-radius: 12px;
     border: 1px solid black;
-    padding: 10px 10px;
+    padding: 5px 10px;
     gap: 10px;
-    width: 30%;
     cursor: pointer;
   }
   .calender-field input {
@@ -162,9 +161,8 @@ letter-spacing: -3%;
     background-color: white;
     border-radius: 12px;
     border: 1px solid black;
-    padding: 10px 10px;
+    padding: 5px 10px;
     gap: 10px;
-    width: 25%;
     cursor: pointer;
   }
   
@@ -176,9 +174,8 @@ letter-spacing: -3%;
     background-color: white;
     border-radius: 12px;
     border: 1px solid black;
-    padding: 10px 10px;
+    padding: 5px 10px;
     gap: 10px;
-    width: 15%;
     cursor: pointer;
   }
   .status-field input {
