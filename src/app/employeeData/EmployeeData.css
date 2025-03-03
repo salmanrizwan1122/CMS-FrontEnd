@@ -107,11 +107,9 @@ textarea:focus {
     gap: 5px;
   }
 }
-
 .search-bar {
   border: none
 }
-
 .employee-card-main {
   display: flex;
   justify-content: space-between;
@@ -119,8 +117,6 @@ textarea:focus {
   flex-wrap: wrap;
   cursor: pointer;
 }
-
-
 .employee-card {
   display: flex;
   flex-direction: row;
@@ -135,7 +131,6 @@ textarea:focus {
   box-sizing: border-box;
 }
 
-/* Responsive Design */
 @media (max-width: 1400px) {
   .employee-card {
     flex: 1 1 calc(33.333% - 20px);
@@ -153,8 +148,6 @@ textarea:focus {
     flex: 1 1 100%;
   }
 }
-
-
 .employee-image img {
   width: 80px;
   height: 80px;
@@ -162,30 +155,23 @@ textarea:focus {
   border-radius: 50%;
   object-fit: cover;
 }
-
 .employee-info {
   display: flex;
   flex-direction: column;
 }
-
 .employee-name {
   font-family: Roboto;
   font-weight: 500;
   font-size: 20px;
   line-height: 22.81px;
-
 }
-
 .employee-designation {
   font-family: Roboto;
   font-weight: 400;
   font-size: 14px;
   line-height: 28.13px;
   color: #983231;
-  ;
-
 }
-
 .employee-email {
   font-family: Roboto;
   font-weight: 400;
@@ -193,10 +179,7 @@ textarea:focus {
   line-height: 23.44px;
   color: #808080;
   margin-top: 4%;
-
-
 }
-
 .employee-phone {
   font-family: Roboto;
   font-weight: 400;
@@ -204,7 +187,6 @@ textarea:focus {
   line-height: 20.44px;
   color: #808080;
 }
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -217,7 +199,6 @@ textarea:focus {
   justify-content: center;
   z-index: 1000;
 }
-
 .modal-content {
   background: white;
   padding: 30px;
@@ -228,7 +209,6 @@ textarea:focus {
   position: relative;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
-
 .modal-icons {
   position: absolute;
   top: 20px;
@@ -236,25 +216,21 @@ textarea:focus {
   display: flex;
   gap: 15px;
 }
-
 .icon {
   font-size: 20px;
   cursor: pointer;
   transition: transform 0.2s;
 
 }
-
 .modal-icons img {
   width: 20px
 }
-
 .modal-header {
   display: flex;
   align-items: start;
   gap: 20px;
   padding: 15px 0px;
 }
-
 .modal-image {
   width: 120px;
   height: 120px;

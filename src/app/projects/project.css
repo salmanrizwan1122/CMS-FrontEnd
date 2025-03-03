@@ -14,21 +14,18 @@
     width: 70%;
     gap: 10px;
   }
-  
   @media (max-width: 1000px) {
     .filtesr-container {
       width: 100%;
       margin-top: 2%;
     }
   }
-  
   @media (max-width: 730px) {
     .filtesr-container {
       flex-direction: column;
       gap: 5px;
     }
   }  
-
 .project-status-field {
     display: flex;
     /* Corrected */
@@ -54,7 +51,6 @@
     gap: 10px;
     cursor: pointer;
   }
-  
   .add-new-btn button {
     cursor: pointer;
   }
@@ -64,12 +60,10 @@
   .project-status-field input {
     width: 100%
   }
-
   .table-heading {
     font-family: Roboto;
     font-weight: 500;
     font-size: 20px;
     line-height: 23.44px;
     letter-spacing: -3%;
-  
   }

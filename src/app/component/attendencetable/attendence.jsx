@@ -96,26 +96,37 @@ const AttendenceTable = ({ data }) => {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    const today = new Date();
-    let startDate = "";
-    let endDate = today.toISOString().split("T")[0]; // Default to today's date
   
-    if (value === "last7days") {
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(today.getDate() - 7);
-      startDate = sevenDaysAgo.toISOString().split("T")[0];
-    } else if (value === "lastMonth") {
-      const oneMonthAgo = new Date();
-      oneMonthAgo.setMonth(today.getMonth() - 1);
-      startDate = oneMonthAgo.toISOString().split("T")[0];
+    if (name === "dateRange") {
+      const today = new Date();
+      let startDate = "";
+      let endDate = today.toISOString().split("T")[0]; // Default to today's date
+  
+      if (value === "last7days") {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(today.getDate() - 7);
+        startDate = sevenDaysAgo.toISOString().split("T")[0];
+      } else if (value === "lastMonth") {
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(today.getMonth() - 1);
+        startDate = oneMonthAgo.toISOString().split("T")[0];
+      } else if (value === "customRange") {
+        startDate = filters.startDate;
+        endDate = filters.endDate;
+      }
+  
+      setFilters((prev) => ({
+        ...prev,
+        dateRange: value,
+        startDate: startDate || prev.startDate,
+        endDate: endDate || prev.endDate,
+      }));
+    } else {
+      setFilters((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
-  
-    setFilters({
-      ...filters,
-      [name]: value,
-      startDate: startDate || filters.startDate,
-      endDate: endDate || filters.endDate,
-    });
   };
   
 
